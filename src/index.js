@@ -5,6 +5,12 @@ const nodemailer = require("nodemailer");
 const moment = require("moment");
 const credentials = require(`../service-account.json`);
 const cron = require('node-cron');
+const express = require('express');
+const app = express();
+app.use(express.static('public'));
+const bodyParser = require('body-parser');
+app.use(bodyParser.urlencoded({ extended: true }));
+app.set('view engine', 'ejs');
 const {
   BitlyClient
 } = require("bitly");
@@ -27,8 +33,8 @@ cron.schedule('0 15 * * Thursday', () => {
   timezone: "America/New_York"
 });
 
-const email = process.env.MAIL_EMAIL;
-const password = process.env.MAIL_PASSWORD;
+const email = "carneira@fiu.edu";
+const password = "Barcelonaneymar11";
 
 const parser = new Parser({
   customFields: {
@@ -249,7 +255,7 @@ async function mail(html) {
 
   await transporter.sendMail({
     from: email,
-    to: process.env.TO_EMAIL,
+    to: "carlosneira1997@gmail.com",
     subject: "FIUCEC Events Newsletter",
     html
   });
@@ -265,6 +271,20 @@ async function mail(html) {
 
 async function main() {
   const events = await parseURL(calendar).catch(console.error);
+
+  app.get('/', function (req, res) {
+    res.render('index')
+  })
+
+  app.post('/', function (req, res) {
+    console.log(req.body.email);
+    console.log(req.body.password);
+    res.render('index');
+  })
+
+  app.listen(3000, function() {
+    console.log('Example app listening on port 3000')
+  })
 
   const html = formatHTML(events, calendar);
   await mail(html).catch(console.error);
