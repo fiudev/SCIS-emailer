@@ -3,7 +3,6 @@ const Parser = require("rss-parser");
 const mjml = require("mjml");
 const nodemailer = require("nodemailer");
 const moment = require("moment");
-<<<<<<< HEAD
 const credentials = require(`../service-account.json`);
 const cron = require('node-cron');
 const express = require('express');
@@ -17,8 +16,7 @@ const {
 } = require("bitly");
 
 const bitly = new BitlyClient(process.env.BITLY_API, {});
-=======
->>>>>>> 51ef0131ef897bfd0b37c79690f73ff2ea0b3345
+
 
 // Cron Job
 cron.schedule('0 15 * * Thursday', () => {
