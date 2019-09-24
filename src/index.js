@@ -3,6 +3,7 @@ const Parser = require("rss-parser");
 const mjml = require("mjml");
 const nodemailer = require("nodemailer");
 const moment = require("moment");
+<<<<<<< HEAD
 const credentials = require(`../service-account.json`);
 const cron = require('node-cron');
 const express = require('express');
@@ -16,6 +17,8 @@ const {
 } = require("bitly");
 
 const bitly = new BitlyClient(process.env.BITLY_API, {});
+=======
+>>>>>>> 51ef0131ef897bfd0b37c79690f73ff2ea0b3345
 
 // Cron Job
 cron.schedule('0 15 * * Thursday', () => {
@@ -148,20 +151,6 @@ async function parseURL(calendar) {
     after: getUnique(reindex, 'link')
   }
 }
-
-// Google Spreadsheet
-// const SPREADSHEET_ID = process.env.SPREADSHEET_ID;
-// async function accessSpreadsheet() {
-//   const doc = new GoogleSpreadsheet(SPREADSHEET_ID)
-//   await promisify(doc.useServiceAccountAuth)(credentials)
-//   const info = await promisify(doc.getInfo)()
-//   console.log(`Loaded doc: ` + info.title + ` by ` + info.author.email);
-//   doc.getRows(1, function (err, rows) {
-//     console.log(`Get All Rows: ` + rows);
-//   });
-// }
-
-// accessSpreadsheet()
 
 // Using MJML to format HTML Email
 function formatHTML(events, calendar) {
