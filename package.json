@@ -31,10 +31,5 @@
   "bugs": {
     "url": "https://github.com/fiudev/emailMailer/issues"
   },
-<<<<<<< HEAD
-  "homepage": "https://github.com/fiudev/emailMailer#readme",
-  "devDependencies": {}
-=======
   "homepage": "https://github.com/fiudev/emailMailer#readme"
->>>>>>> 51ef0131ef897bfd0b37c79690f73ff2ea0b3345
 }
