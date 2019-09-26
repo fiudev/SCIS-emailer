@@ -263,10 +263,15 @@ async function main() {
     res.render('index')
   })
 
+  app.get('/mainpage', function (req, res) {
+    res.render('mainpage')
+  })
+
   app.post('/', function (req, res) {
     console.log(req.body.email);
     console.log(req.body.password);
-    res.render('index');
+    //res.render('index');
+    res.redirect('/mainpage')
   })
 
   app.listen(3000, function() {
