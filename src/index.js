@@ -6,6 +6,7 @@ const moment = require("moment");
 
 const email = process.env.MAIL_EMAIL;
 const password = process.env.MAIL_PASSWORD;
+const jobsAPI = process.env.JOBS_API;
 
 const parser = new Parser({
   customFields: {
@@ -109,20 +110,54 @@ async function parseURL(calendar) {
     return obj.date > nextweek;
   });
 
-  // console.log("2week date: " + nextweek);
-  //console.log("Index: " + index);
-  // console.log("Save the Date results: " + reindex);
+  console.log("2week date: " + nextweek);
+  console.log("Index: " + index);
+  console.log("Save the Date results: " + reindex);
 
   //console.log(getUnique(results, 'link'));
-  //return getUnique(index, 'link')
+ 
   return {
     before: getUnique(index, 'link'),
     after: getUnique(reindex, 'link')
   }
+
+// Career Path
+
+//const jobsAPI = `https://careerpath.cis.fiu.edu/wp-json/wp/v2/job-listings?per_page=3`;
+const jobPosting = document.getElementById('jobPosting');
+
+function jobsData() {
+    fetch(jobsAPI)
+    .then((res) => res.json())
+    .then((data) => {
+        let output = '';
+        data.map((item) => {
+            output += `
+            <p font-size="15px" font-weight="600" color="#000" align="center">
+            <a href="${item.link}">${item.title.rendered}</a>
+        </p>
+        <p font-size="14px" color="#000">
+            ${item.content.rendered}
+        </p>
+        <p>
+            <a href="${item.link}">Learn More...</a>
+        </p>
+        <hr border-color="red" height="2px" />
+            `;
+        });
+        jobPosting.innerHTML = output;
+        console.log(`Inside the function: ${output}`);
+    })
+    .catch(err => console.log(err));
+}
+jobsData();
+console.log(jobsData());
+
 }
 
 // Using MJML to format HTML Email
 function formatHTML(events, calendar) {
+
   const {
     html
   } = mjml(
@@ -203,65 +238,13 @@ function formatHTML(events, calendar) {
                 	Career Path
           	</mj-text>
 	  </mj-section>
-
-		<mj-text font-size="15px" font-weight="600" color="#000" align="center">
-                        <a href="https://careerpath.cs.fiu.edu/job/emerge-americas-miami-8-emerge-americas-fellowship/">Emerge Americas Fellowship</a>
-                </mj-text>
-                <mj-text font-size="14px" color="#000">
-			The Fellows will participate in an educational and leadership development program led by eMerge Americas staff and partners, that will help orient them on the landscape of the South Florida tech and entrepreneurial ecosystem (i.e. history, key stakeholders, etc.). The Fellows will also receive practical professional experience through job placement at leading South Florida-based tech companies and ventures.
-                </mj-text>
-                <mj-text>
-                        <a href="https://careerpath.cs.fiu.edu/job/emerge-americas-miami-8-emerge-americas-fellowship/">Learn More...</a>
-                </mj-text>
+	
+		<mj-raw>
+		<!-- Career Path API TEXT -->
+		<div id="jobPosting"></div>
+		</mj-raw>
                         <mj-spacer height="2px" />
                 <mj-divider border-color="#F8C93E"></mj-divider>
-
-
-		<mj-text font-size="15px" font-weight="600" color="#000" align="center">
-			<a href="https://careerpath.cis.fiu.edu/job/kleiner-perkins-fellows-8-kp-fellows-program-product-design-engineering/">KP Fellows Program (Product, Design, Engineering)</a>
-		</mj-text>
-		<mj-text font-size="14px" color="#000">
-			The KP Fellows Program is a unique, career-defining opportunity for technical students who are interested in pursuing technology, entrepreneurship, design, and startups. Engineering and Design Fellows work with one of our company partners over the summer where they develop and hone their technical skills and are mentored by an executive within the company. Product Fellows will spend a full year working with one of our company partners.
-		</mj-text>
-		<mj-text>
-			<a href="https://careerpath.cis.fiu.edu/job/kleiner-perkins-fellows-8-kp-fellows-program-product-design-engineering/">Learn More...</a>
-		</mj-text>
-			<mj-spacer height="2px" />
-		<mj-divider border-color="#F8C93E"></mj-divider>
-		<mj-text font-size="15px" font-weight="600" color="#000" align="center">
-                        <a href="https://careerpath.cis.fiu.edu/job/fiu-panthersoft-fiu-miami-fl-7-erp-application-developer-i/">ERP Application Developer I</a>
-                </mj-text>
-                <mj-text font-size="14px" color="#000">
-                        Entry level developer position at PantherSoft (FIU). This is a full-time position with benefits and tuition waiver for recent graduates of CS/IT with programming experience. Work with Oracle ERP PeopleSoft systems, FIU Mobile, Business Intelligence, Integration platforms, chatbots, and other enterprise systems.
-                </mj-text>
-                <mj-text>
-                        <a href="https://careerpath.cis.fiu.edu/job/fiu-panthersoft-fiu-miami-fl-7-erp-application-developer-i/">Learn More...</a>
-                </mj-text>
-                        <mj-spacer height="2px" />
-                <mj-divider border-color="#F8C93E"></mj-divider>
-		
-		<mj-text font-size="15px" font-weight="600" color="#000" align="center">
-                        <a href="https://careerpath.cis.fiu.edu/job/gensco-pharma-doral-6-paid-it-internship/">Paid IT Internship</a>
-                </mj-text>
-                <mj-text font-size="14px" color="#000">
-                        Gensco Pharma is currently looking to hire a paid intern to work out of our Doral, FL office location. Must be enrolled as junior, senior, or graduate student in: information technology, computer science,  software development, Internet of Things, computer engineering, management information science, health informatics, or related degree.
-                </mj-text>
-                <mj-text>
-                        <a href="https://careerpath.cis.fiu.edu/job/gensco-pharma-doral-6-paid-it-internship/">Learn More...</a>
-                </mj-text>
-                        <mj-spacer height="2px" />
-                <mj-divider border-color="#F8C93E"></mj-divider>
-
-		<mj-text font-size="15px" font-weight="600" color="#000" align="center">
-                        <a href="https://careerpath.cis.fiu.edu/job/daasly-inc-hialeah-fl-7-entry-level-sql-developer/">Entry Level SQL Developer</a>
-                </mj-text>
-                <mj-text font-size="14px" color="#000">
-                        We are seeking an Entry Level SQL Developer to become part of our team! You will train directly with the company co-founders who have nearly a decade of experience in their field. Experience with databases, such as MySQL, SQL Server, AWS Redshift, Google Cloud Big Query.
-                </mj-text>
-                <mj-text>
-                        <a href="https://careerpath.cis.fiu.edu/job/daasly-inc-hialeah-fl-7-entry-level-sql-developer/">Learn More...</a>
-                </mj-text>
-         </mj-section>
 
            <mj-section background-color="#fff">
               <mj-text align="center" font-size="15px" font-weight="300" font-family="Helvetica Neue" color="#000">
