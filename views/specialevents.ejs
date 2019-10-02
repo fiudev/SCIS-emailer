@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" content="width=device-width, initial-scale=1">
+        <title>TEST</title>
+        <link rel="stylesheet" type="text/css" href="/css/style.css">
+    </head>
+    <body>
+        <div class="sidebar">
+            <a class="active" href="mainpage">Calendar Details</a>
+            <a href="specialevents">Special Event</a>
+        </div>
+        <div class= "container">
+            <fieldset>
+                <form method="POST">
+                    <input name="date" type="date" class="ghost-input">
+                    <input name="title" type="text" class="ghost-input" placeholder="Event Title">
+                    <input name="link" type="text" class="ghost-input" placeholder="Event Link">
+                    <button type="submit" class="ghost-button" formaction="/specialEvent">Submit</button>
+                </form>
+            </fieldset>
+        </div>
+    </body>
+</html>

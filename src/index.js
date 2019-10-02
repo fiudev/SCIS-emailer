@@ -9,7 +9,7 @@ const express = require('express');
 const app = express();
 app.use(express.static('public'));
 const bodyParser = require('body-parser');
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({ extended: false }));
 app.set('view engine', 'ejs');
 const {
   BitlyClient
@@ -17,6 +17,7 @@ const {
 
 const bitly = new BitlyClient(process.env.BITLY_API, {});
 
+let toEmail = "carlosneira1997@gmail.com"
 
 // Cron Job
 cron.schedule('0 15 * * Thursday', () => {
@@ -34,8 +35,9 @@ cron.schedule('0 15 * * Thursday', () => {
   timezone: "America/New_York"
 });
 
-const email = "carneira@fiu.edu";
-const password = "Barcelonaneymar11";
+const email = process.env.MAIL_EMAIL;
+const password = process.env.MAIL_PASSWORD;
+const jobsAPI = process.env.JOBS_API;
 
 const parser = new Parser({
   customFields: {
@@ -329,7 +331,7 @@ async function mail(html) {
 
   await transporter.sendMail({
     from: email,
-    to: "carlosneira1997@gmail.com",
+    to: process.env.TO_EMAIL,
     subject: "FIUCEC Events Newsletter",
     html
   });
@@ -346,14 +348,92 @@ async function mail(html) {
 async function main() {
   const events = await parseURL(calendar).catch(console.error);
 
+  /* Getting initial landing page*/
   app.get('/', function (req, res) {
     res.render('index')
+
   })
 
+/* Getting Admin page */
   app.get('/mainpage', function (req, res) {
     res.render('mainpage')
   })
 
+  /* Getting Admin page */
+  app.get('/specialevents', function (req, res) {
+    res.render('specialevents')
+  })
+
+  /**Controls change for "To email" */
+  app.post('/changetoemail', function (req,res) {
+    console.log('Old email: '+ toEmail)
+    toEmail = req.body.toEmail
+    console.log('New to email: '+ toEmail)
+    res.redirect('/mainpage');
+  })
+
+
+  /**Controls change for "From email" */
+  app.post('/changeFromEmail', function (req,res) {
+    console.log('New from email: '+ req.body.fromEmail)
+    res.redirect('/mainpage');
+  })
+
+
+  /**Controls change for "Title" */
+  app.post('/changeTitle', function (req,res) {
+    console.log('New title: '+ req.body.title)
+    res.redirect('/mainpage');
+  })
+
+
+  /**Controls change for "link" */
+  app.post('/changeLink', function (req,res) {
+    console.log('New link: '+ req.body.link)
+    res.redirect('/mainpage');
+  })
+
+
+  /**Controls change for "To email" */
+  app.post('/changetoemail', function (req,res) {
+    console.log('New to email: '+ req.body.toEmail)
+    res.redirect('/mainpage');
+  })
+
+
+  /**Controls change for "URL" */
+  app.post('/changeURL', function (req,res) {
+    console.log('New url: '+ req.body.url)
+    res.redirect('/mainpage');
+  })
+
+
+  /**Controls change for "RSS" */
+  app.post('/changeRSS', function (req,res) {
+    console.log('New rss: '+ req.body.rss)
+    res.redirect('/mainpage');
+  })
+
+
+  /**Controls change for "Event week" */
+  app.post('/changeEventWeek', function (req,res) {
+    console.log('New to email: '+ req.body.week)
+    res.redirect('/mainpage');
+  })
+
+  /**Controls change for "Save the date" */
+  app.post('/changeSaveTheDate', function (req,res) {
+    console.log('New to email: '+ req.body.saveTheDate)
+    res.redirect('/mainpage');
+  })
+
+  /** Controls add special event */
+  app.post('/specialEvent', function (req,res) {
+    console.log('New event: '+ req.body.date +" "+ req.body.title +" "+ req.body.link)
+    res.redirect('/specialevents');
+  })
+  
+  /* Redirecting to admin page */
   app.post('/', function (req, res) {
     console.log(req.body.email);
     console.log(req.body.password);
@@ -361,10 +441,11 @@ async function main() {
     res.redirect('/mainpage')
   })
 
+  /* Listening to port */
   app.listen(3000, function() {
     console.log('Example app listening on port 3000')
   })
-
+  
   const html = formatHTML(events, calendar);
   await mail(html).catch(console.error);
 }

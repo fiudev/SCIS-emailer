@@ -1,38 +1,34 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta charset="utf-8">
+        <meta charset="utf-8" content="width=device-width, initial-scale=1">
         <title>TEST</title>
         <link rel="stylesheet" type="text/css" href="/css/style.css">
     </head>
     <body>
         <div class="sidebar">
-            <a class="active" href="#home">Home</a>
-            <a href="#news">News</a>
-            <a href="#contact">Contact</a>
-            <a href="#about">About</a>
+            <a class="active" href="mainpage">Calendar Details</a>
+            <a href="specialevents">Special Event</a>
         </div>
         <div class= "container">
             <fieldset>
-                <form action="/mainpage" method="POST">
-                    <input name="submit" type="text" class="ghost-input" placeholder="Change to email">
-                    <input type="submit" class="ghost-button" value="changeToEmail">
-                    <input name="submit" type="text" class="ghost-input" placeholder="Change from Email">
-                    <input type="submit" class="ghost-button" value="changeFromEmail">
-                    <input name="submit" type="text" class="ghost-input" placeholder="Change email title">
-                    <input type="submit" class="ghost-button" value="changeTitle">
-                    <input name="submit" type="text" class="ghost-input" placeholder="Change email title">
-                    <input type="submit" class="ghost-button" value="changeTitle">
-                    <input name="submit" type="text" class="ghost-input" placeholder="Change email title">
-                    <input type="submit" class="ghost-button" value="changeTitle">
-                    <input name="submit" type="text" class="ghost-input" placeholder="Change email title">
-                    <input type="submit" class="ghost-button" value="changeTitle">
-                    <input name="submit" type="text" class="ghost-input" placeholder="Change email title">
-                    <input type="submit" class="ghost-button" value="changeTitle">
-                    <input name="submit" type="text" class="ghost-input" placeholder="Change email title">
-                    <input type="submit" class="ghost-button" value="changeTitle">
-                    <input name="submit" type="text" class="ghost-input" placeholder="Change email title">
-                    <input type="submit" class="ghost-button" value="changeTitle">
+                <form method="POST">
+                    <input name="toEmail" type="text" class="ghost-input" placeholder="Change to email">
+                    <button type="submit" class="ghost-button" formaction="/changetoemail">Change To Email</button>
+                    <input name="fromEmail" type="text" class="ghost-input" placeholder="Change from email">
+                    <button type="submit" class="ghost-button" formaction="/changeFromEmail">Change From Email</button>
+                    <input name="title" type="text" class="ghost-input" placeholder="Change calendar title">
+                    <button type="submit" class="ghost-button" formaction="/changeTitle">Change Calendar Title</button>
+                    <input name="link" type="text" class="ghost-input" placeholder="change calendar link">
+                    <button type="submit" class="ghost-button" formaction="/changeLink">Change Link</button>
+                    <input name="url" type="text" class="ghost-input" placeholder="Change calendar cover URL">
+                    <button type="submit" class="ghost-button" formaction="/changeURL">Change URL</button>
+                    <input name="rss" type="text" class="ghost-input" placeholder="Change calendar RSS URL">
+                    <button type="submit" class="ghost-button" formaction="/changeRSS">Change RSS</button>
+                    <input name="week" type="text" class="ghost-input" placeholder="Event week">
+                    <button type="submit" class="ghost-button" formaction="/changeEventWeek">Change Event Week</button>
+                    <input name="saveTheDate" type="text" class="ghost-input" placeholder="Save the date">
+                    <button type="submit" class="ghost-button" formaction="/changeSaveTheDate">Change Save The Date</button>
                 </form>
             </fieldset>
         </div>
