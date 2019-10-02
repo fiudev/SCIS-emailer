@@ -275,9 +275,19 @@ function formatHTML(events, calendar) {
 }
 
 async function mail(html) {
+  // Local Server
+  // const transporter = nodemailer.createTransport({
+  //   host: "smtp.cs.fiu.edu",
+  //   port: 25,
+  // });
+
+  // Gmail Version
   const transporter = nodemailer.createTransport({
-    host: "smtp.cs.fiu.edu",
-    port: 25,
+    service: "gmail",
+    auth: {
+      user: email,
+      pass: password
+    }
   });
 
   await transporter.sendMail({
