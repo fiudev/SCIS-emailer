@@ -3,6 +3,11 @@ const Parser = require("rss-parser");
 const mjml = require("mjml");
 const nodemailer = require("nodemailer");
 const moment = require("moment");
+const fetch = require('node-fetch');
+const jsdom = require("jsdom");
+const {
+  JSDOM
+} = jsdom;
 
 const email = process.env.MAIL_EMAIL;
 const password = process.env.MAIL_PASSWORD;
@@ -121,39 +126,69 @@ async function parseURL(calendar) {
     after: getUnique(reindex, 'link')
   }
 
+}
+
 // Career Path
 
-//const jobsAPI = `https://careerpath.cis.fiu.edu/wp-json/wp/v2/job-listings?per_page=3`;
-const jobPosting = document.getElementById('jobPosting');
+const jobsAPI = `https://careerpath.cis.fiu.edu/wp-json/wp/v2/job-listings?per_page=3`;
+//const jobPosting = window.getElementById('jobPosting');
+const dom = new JSDOM(`<div id="jobPosting"></div>`);
 
+const jobPosts = 
 function jobsData() {
-    fetch(jobsAPI)
+  fetch(jobsAPI)
     .then((res) => res.json())
     .then((data) => {
-        let output = '';
-        data.map((item) => {
-            output += `
-            <p font-size="15px" font-weight="600" color="#000" align="center">
-            <a href="${item.link}">${item.title.rendered}</a>
-        </p>
-        <p font-size="14px" color="#000">
-            ${item.content.rendered}
-        </p>
-        <p>
-            <a href="${item.link}">Learn More...</a>
-        </p>
-        <hr border-color="red" height="2px" />
-            `;
-        });
-        jobPosting.innerHTML = output;
-        console.log(`Inside the function: ${output}`);
+      data.json
+      // let output = '';
+      // data.map((item) => {
+      //   output += `
+      //       <p font-size="15px" font-weight="600" color="#000" align="center">
+      //       <a href="${item.link}">${item.title.rendered}</a>
+      //   </p>
+      //   <p font-size="14px" color="#000">
+      //       ${item.content.rendered}
+      //   </p>
+      //   <p>
+      //       <a href="${item.link}">Learn More...</a>
+      //   </p>
+      //   <hr border-color="red" height="2px" />
+      //       `;
+      // });
+      //dom.window.document.getElementById('jobPosting').innerHTML = output;
+      //console.log(`Inside the function: ${output}`);
+      //jobFeed = output;
     })
     .catch(err => console.log(err));
 }
-jobsData();
-console.log(jobsData());
 
-}
+//console.log(jobsData);
+console.log(`Please Show!: ${jobPosts}`);
+
+// const jobPosts = fetch(jobsAPI)
+//     .then((res) => res.json())
+//     .then((jobs) => {
+//       let output = '';
+//       jobs.map(job => {
+//         output += `
+//             <p font-size="15px" font-weight="600" color="#000" align="center">
+//             <a href="${job.link}">${job.title.rendered}</a>
+//         </p>
+//         <p font-size="14px" color="#000">
+//             ${job.content.rendered}
+//         </p>
+//         <p>
+//             <a href="${job.link}">Learn More...</a>
+//         </p>
+//         <hr border-color="red" height="2px" />
+//             `;
+//       });
+//       //jobPosting.innerHTML = output;
+//       //console.log(`Inside the function: ${output}`);
+//     })
+//     .catch(err => console.log(err));
+
+//console.log(jobPosts);
 
 // Using MJML to format HTML Email
 function formatHTML(events, calendar) {
@@ -238,13 +273,16 @@ function formatHTML(events, calendar) {
                 	Career Path
           	</mj-text>
 	  </mj-section>
-	
-		<mj-raw>
+  
+    		<mj-raw>
 		<!-- Career Path API TEXT -->
-		<div id="jobPosting"></div>
-		</mj-raw>
-                        <mj-spacer height="2px" />
-                <mj-divider border-color="#F8C93E"></mj-divider>
+    <div id="jobPosting"></div>
+    < /mj-raw>
+
+
+
+            <mj-spacer height="2px" />
+          <mj-divider border-color="#F8C93E"></mj-divider>
 
            <mj-section background-color="#fff">
               <mj-text align="center" font-size="15px" font-weight="300" font-family="Helvetica Neue" color="#000">
@@ -293,7 +331,7 @@ async function mail(html) {
   await transporter.sendMail({
     from: email,
     to: process.env.TO_EMAIL,
-    subject: "FIUCEC Events Newsletter",
+    subject: "FIUSCIS Events Newsletter",
     html
   });
 
