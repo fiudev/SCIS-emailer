@@ -51,7 +51,7 @@ const parser = new Parser({
 
 const SCIS = {
   title: "School of Computing and Information Sciences",
-  cover: "https://www.cis.fiu.edu/wp-content/uploads/2019/09/scis-newsletter-cover-update-09262019-1.png",
+  cover: "https://www.cis.fiu.edu/wp-content/uploads/2019/10/scis-newsletter-cover-10032019.png",
   link: "https://www.cis.fiu.edu/events",
   calendar_url: "https://calendar.fiu.edu/department/computing_information_sciences/calendar/xml",
   date: moment().format('dddd, MMMM Do YYYY')
@@ -236,6 +236,22 @@ function formatHTML(events, calendar) {
           	</mj-text>
 	  </mj-section>
 
+
+                <mj-text font-size="15px" font-weight="600" color="#000" align="center">
+                        <a href="https://careerpath.cis.fiu.edu/job/american-express-company-phoenix-az-ft-lauderdale-fl-and-new-york-ny-6-campus-undergraduate-2020-technology-software-engineering-internship/">Campus Undergraduate – 2020 Technology Software Engineering Internship</a>
+                </mj-text>
+                <mj-text font-size="14px" color="#000">
+                        Join our 10 week paid summer internship program where you will have opportunities for development, networking and also engage with our Executives. A summer internship at American Express will give you the chance to influence and strengthen the core businesses across the organization.
+
+Interns are a member of a product engineering or delivery and integration team. We will place you on a scrum team where you will collaborate with colleagues and our business partners. So if you are dedicated to the newest technology and motivating others, start your career here.
+                </mj-text>
+                <mj-text>
+                        <a href="https://careerpath.cis.fiu.edu/job/american-express-company-phoenix-az-ft-lauderdale-fl-and-new-york-ny-6-campus-undergraduate-2020-technology-software-engineering-internship/">Learn More...</a>
+                </mj-text>
+                        <mj-spacer height="2px" />
+                <mj-divider border-color="#F8C93E"></mj-divider>
+
+
 		<mj-text font-size="15px" font-weight="600" color="#000" align="center">
                         <a href="https://careerpath.cs.fiu.edu/job/emerge-americas-miami-8-emerge-americas-fellowship/">Emerge Americas Fellowship</a>
                 </mj-text>
@@ -260,7 +276,9 @@ function formatHTML(events, calendar) {
 		</mj-text>
 			<mj-spacer height="2px" />
 		<mj-divider border-color="#F8C93E"></mj-divider>
-		<mj-text font-size="15px" font-weight="600" color="#000" align="center">
+	
+
+        	<mj-text font-size="15px" font-weight="600" color="#000" align="center">
                         <a href="https://careerpath.cis.fiu.edu/job/fiu-panthersoft-fiu-miami-fl-7-erp-application-developer-i/">ERP Application Developer I</a>
                 </mj-text>
                 <mj-text font-size="14px" color="#000">
@@ -269,30 +287,7 @@ function formatHTML(events, calendar) {
                 <mj-text>
                         <a href="https://careerpath.cis.fiu.edu/job/fiu-panthersoft-fiu-miami-fl-7-erp-application-developer-i/">Learn More...</a>
                 </mj-text>
-                        <mj-spacer height="2px" />
-                <mj-divider border-color="#F8C93E"></mj-divider>
-		
-		<mj-text font-size="15px" font-weight="600" color="#000" align="center">
-                        <a href="https://careerpath.cis.fiu.edu/job/gensco-pharma-doral-6-paid-it-internship/">Paid IT Internship</a>
-                </mj-text>
-                <mj-text font-size="14px" color="#000">
-                        Gensco Pharma is currently looking to hire a paid intern to work out of our Doral, FL office location. Must be enrolled as junior, senior, or graduate student in: information technology, computer science,  software development, Internet of Things, computer engineering, management information science, health informatics, or related degree.
-                </mj-text>
-                <mj-text>
-                        <a href="https://careerpath.cis.fiu.edu/job/gensco-pharma-doral-6-paid-it-internship/">Learn More...</a>
-                </mj-text>
-                        <mj-spacer height="2px" />
-                <mj-divider border-color="#F8C93E"></mj-divider>
 
-		<mj-text font-size="15px" font-weight="600" color="#000" align="center">
-                        <a href="https://careerpath.cis.fiu.edu/job/daasly-inc-hialeah-fl-7-entry-level-sql-developer/">Entry Level SQL Developer</a>
-                </mj-text>
-                <mj-text font-size="14px" color="#000">
-                        We are seeking an Entry Level SQL Developer to become part of our team! You will train directly with the company co-founders who have nearly a decade of experience in their field. Experience with databases, such as MySQL, SQL Server, AWS Redshift, Google Cloud Big Query.
-                </mj-text>
-                <mj-text>
-                        <a href="https://careerpath.cis.fiu.edu/job/daasly-inc-hialeah-fl-7-entry-level-sql-developer/">Learn More...</a>
-                </mj-text>
          </mj-section>
 
            <mj-section background-color="#fff">
