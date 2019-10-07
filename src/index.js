@@ -3,7 +3,6 @@ const Parser = require("rss-parser");
 const mjml = require("mjml");
 const nodemailer = require("nodemailer");
 const moment = require("moment");
-const credentials = require(`../service-account.json`);
 const cron = require('node-cron');
 const express = require('express');
 const app = express();
@@ -347,6 +346,9 @@ async function main() {
   app.get('/', function (req, res) {
     res.render('index')
 
+  })
+  app.post('/logout', function(req, res) {
+    res.redirect('/')
   })
 
 /* Getting Admin page */
