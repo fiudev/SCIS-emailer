@@ -52,7 +52,7 @@ const parser = new Parser({
   }
 });
 
-var SCIS = {
+let SCIS = {
   title: "School of Computing and Information Sciences",
   cover: "https://www.cis.fiu.edu/wp-content/uploads/2019/10/scis-newsletter-cover-10032019.png",
   link: "https://www.cis.fiu.edu/events",
