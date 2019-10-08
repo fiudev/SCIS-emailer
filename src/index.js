@@ -14,9 +14,13 @@ const {
   BitlyClient
 } = require("bitly");
 
+var emailTo = "test@fiu.edu"
+var emailFrom = "test@fiu.edu"
+var eventWeek = 14
+var saveDate = 30
+
 const bitly = new BitlyClient(process.env.BITLY_API, {});
 
-let toEmail = "carlosneira1997@gmail.com"
 
 // Cron Job
 cron.schedule('0 15 * * Thursday', () => {
@@ -48,7 +52,7 @@ const parser = new Parser({
   }
 });
 
-const SCIS = {
+var SCIS = {
   title: "School of Computing and Information Sciences",
   cover: "https://www.cis.fiu.edu/wp-content/uploads/2019/10/scis-newsletter-cover-10032019.png",
   link: "https://www.cis.fiu.edu/events",
@@ -353,7 +357,17 @@ async function main() {
 
 /* Getting Admin page */
   app.get('/mainpage', function (req, res) {
-    res.render('mainpage')
+    res.render('mainpage',
+    {
+      emailTo: emailTo, 
+      emailFrom: emailFrom, 
+      calanderTitle: SCIS.title,
+      calanderLink: SCIS.link,
+      calanderURL: SCIS.calendar_url,
+      calanderRSS: SCIS.cover,
+      eventWeek: eventWeek,
+      saveTheDate: saveDate
+      })
   })
 
   /* Getting Admin page */
@@ -361,72 +375,15 @@ async function main() {
     res.render('specialevents')
   })
 
-  /**Controls change for "To email" */
-  app.post('/changetoemail', function (req,res) {
-    console.log('Old email: '+ toEmail)
-    toEmail = req.body.toEmail
-    console.log('New to email: '+ toEmail)
-    res.redirect('/mainpage');
-  })
-
-
-  /**Controls change for "From email" */
-  app.post('/changeFromEmail', function (req,res) {
-    console.log('New from email: '+ req.body.fromEmail)
-    res.redirect('/mainpage');
-  })
-
-
-  /**Controls change for "Title" */
-  app.post('/changeTitle', function (req,res) {
-    console.log('New title: '+ req.body.title)
-    res.redirect('/mainpage');
-  })
-
-
-  /**Controls change for "link" */
-  app.post('/changeLink', function (req,res) {
-    console.log('New link: '+ req.body.link)
-    res.redirect('/mainpage');
-  })
-
-
-  /**Controls change for "To email" */
-  app.post('/changetoemail', function (req,res) {
-    console.log('New to email: '+ req.body.toEmail)
-    res.redirect('/mainpage');
-  })
-
-
-  /**Controls change for "URL" */
-  app.post('/changeURL', function (req,res) {
-    console.log('New url: '+ req.body.url)
-    res.redirect('/mainpage');
-  })
-
-
-  /**Controls change for "RSS" */
-  app.post('/changeRSS', function (req,res) {
-    console.log('New rss: '+ req.body.rss)
-    res.redirect('/mainpage');
-  })
-
-
-  /**Controls change for "Event week" */
-  app.post('/changeEventWeek', function (req,res) {
-    console.log('New to email: '+ req.body.week)
-    res.redirect('/mainpage');
-  })
-
-  /**Controls change for "Save the date" */
-  app.post('/changeSaveTheDate', function (req,res) {
-    console.log('New to email: '+ req.body.saveTheDate)
+  /**Controls change for Calander */
+  app.post('/submitChanges', function (req,res) {
+    console.dir(req.body)
     res.redirect('/mainpage');
   })
 
   /** Controls add special event */
   app.post('/specialEvent', function (req,res) {
-    console.log('New event: '+ req.body.date +" "+ req.body.title +" "+ req.body.link)
+    console.dir(req.body)
     res.redirect('/specialevents');
   })
   

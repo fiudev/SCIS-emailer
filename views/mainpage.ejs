@@ -19,22 +19,40 @@
         <div class= "container">
             <fieldset>
                 <form method="POST">
-                    <input name="toEmail" type="text" class="ghost-input" placeholder="Change to email">
-                    <button type="submit" class="ghost-button" formaction="/changetoemail">Change To Email</button>
-                    <input name="fromEmail" type="text" class="ghost-input" placeholder="Change from email">
-                    <button type="submit" class="ghost-button" formaction="/changeFromEmail">Change From Email</button>
-                    <input name="title" type="text" class="ghost-input" placeholder="Change calendar title">
-                    <button type="submit" class="ghost-button" formaction="/changeTitle">Change Calendar Title</button>
-                    <input name="link" type="text" class="ghost-input" placeholder="change calendar link">
-                    <button type="submit" class="ghost-button" formaction="/changeLink">Change Link</button>
-                    <input name="url" type="text" class="ghost-input" placeholder="Change calendar cover URL">
-                    <button type="submit" class="ghost-button" formaction="/changeURL">Change URL</button>
-                    <input name="rss" type="text" class="ghost-input" placeholder="Change calendar RSS URL">
-                    <button type="submit" class="ghost-button" formaction="/changeRSS">Change RSS</button>
-                    <input name="week" type="text" class="ghost-input" placeholder="Event week">
-                    <button type="submit" class="ghost-button" formaction="/changeEventWeek">Change Event Week</button>
-                    <input name="saveTheDate" type="text" class="ghost-input" placeholder="Save the date">
-                    <button type="submit" class="ghost-button" formaction="/changeSaveTheDate">Change Save The Date</button>
+                    <h1 style="top: 200px">Calendar Details Edit</h1>
+                    <div class="left">
+                        <label for = "toEmail" class="labelText" >Email To:</label>
+                        <input name="toEmail" type="email" class="ghost-input" placeholder= <%= emailTo %> >
+                    </div>
+                    <div class="left">
+                        <label for = "fromEmail" class="labelText" >From Email:</label>
+                        <input name="fromEmail" type="text" class="ghost-input" placeholder=<%= emailFrom %>>
+                    </div>
+                    <div class="left">
+                        <label for = "title" class="labelText" >Calendar Title:</label>
+                        <input name="title" type="text" class="ghost-input" placeholder=<%= calanderTitle %>>
+                    </div>
+                    <div class="left">
+                        <label for = "link" class="labelText" >Calendar Link:</label>
+                        <input name="link" type="text" class="ghost-input" placeholder=<%= calanderLink %>>
+                    </div>
+                    <div class="left">
+                        <label for = "url" class="labelText" >Calendar URL:</label>
+                        <input name="url" type="text" class="ghost-input" placeholder=<%= calanderURL %>>
+                    </div>
+                    <div class="left">
+                        <label for = "rss" class="labelText" >Calendar RSS:</label>
+                        <input name= "rss" type="text" class="ghost-input" placeholder=<%= calanderRSS %>>
+                    </div>
+                    <div class = "left">
+                        <label for ="week" class="labelText" >Event Week:</label>
+                        <input name="week" type="text" class="ghost-input" placeholder=<%= eventWeek %>>
+                    </div>
+                    <div class = "left">
+                        <label for ="saveTheDate" class="labelText" >Save the date:</label>
+                        <input name="saveTheDate" type="text" class="ghost-input" placeholder=<%= saveTheDate %>>
+                    </div>
+                    <button type="submit" class="ghost-button" formaction="/submitChanges">Submit</button>
                 </form>
             </fieldset>
         </div>
