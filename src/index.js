@@ -53,6 +53,10 @@ const parser = new Parser({
 });
 
 let SCIS = {
+  emailTo: "test@fiu.edu",
+  emailFrom: "test@fiu.edu",
+  eventWeek: 14,
+  saveDate: 30,
   title: "School of Computing and Information Sciences",
   cover: "https://www.cis.fiu.edu/wp-content/uploads/2019/10/scis-newsletter-cover-10032019.png",
   link: "https://www.cis.fiu.edu/events",
@@ -359,14 +363,14 @@ async function main() {
   app.get('/mainpage', function (req, res) {
     res.render('mainpage',
     {
-      emailTo: emailTo, 
-      emailFrom: emailFrom, 
-      calanderTitle: SCIS.title,
-      calanderLink: SCIS.link,
-      calanderURL: SCIS.calendar_url,
-      calanderRSS: SCIS.cover,
-      eventWeek: eventWeek,
-      saveTheDate: saveDate
+      emailTo: SCIS.emailTo, 
+      emailFrom: SCIS.emailFrom, 
+      title: SCIS.title,
+      link: SCIS.link,
+      calendar_url: SCIS.calendar_url,
+      cover: SCIS.cover,
+      eventWeek: SCIS.eventWeek,
+      saveTheDate: SCIS.saveDate
       })
   })
 
@@ -377,7 +381,16 @@ async function main() {
 
   /**Controls change for Calander */
   app.post('/submitChanges', function (req,res) {
-    console.dir(req.body)
+    for (let prop in req.body) {
+      if (req.body[prop] != '') {
+        if (prop === 'eventWeek' || prop === 'saveDate') {
+          SCIS[prop] = Number(req.body[prop])
+        }
+        else {
+        SCIS[prop] = req.body[prop]
+        }
+      }
+    }
     res.redirect('/mainpage');
   })
 
