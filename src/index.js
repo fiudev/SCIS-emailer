@@ -19,7 +19,7 @@ const parser = new Parser({
 
 const SCIS = {
   title: "School of Computing and Information Sciences",
-  cover: "https://www.cis.fiu.edu/wp-content/uploads/2019/10/scis-newsletter-cover-10032019.png",
+  cover: "https://www.cis.fiu.edu/wp-content/uploads/2019/10/scis-newsletter-cover-10102019.png",
   link: "https://www.cis.fiu.edu/events",
   calendar_url: "https://calendar.fiu.edu/department/computing_information_sciences/calendar/xml",
   date: moment().format('dddd, MMMM Do YYYY')
@@ -67,7 +67,6 @@ async function parseURL(calendar) {
       link
     } = event;
     const datetime = new Date(date);
-    //const {url} = await bitly.shorten(link);
     const media = event["media:content"][0]["$"].url;
 
     // console.log("List Event for 2 weeks: " + event);
@@ -204,57 +203,71 @@ function formatHTML(events, calendar) {
           	</mj-text>
 	  </mj-section>
 
+                <mj-text font-size="15px" font-weight="600" color="#000" align="center">
+                        <a href="https://careerpath.cis.fiu.edu/job/center-for-advancing-education-and-studies-on-critical-infrastructures-resilience-caescir-fiu-mmc-28-caescir-hs-stem-fellow/">CAESCIR HS-STEM Fellow</a>
+                </mj-text>
+                <mj-text font-size="14px" color="#000">
+                    Florida International University’s Center for Advancing Education and Studies on Critical Infrastructures Resilience (CAESCIR) is funded by a Scientific Leadership Award granted by the United States Department of Homeland Security. CAESCIR aims to improve our nation’s critical infrastructures security and resilience via an integrated research and education framework that covers Homeland Security Science, Technology, Engineering, and Mathematics (HS- STEM) areas of interest in computer science, information technology, and cybersecurity.
+                </mj-text>
+                <mj-text>
+                        <a href="https://careerpath.cis.fiu.edu/job/center-for-advancing-education-and-studies-on-critical-infrastructures-resilience-caescir-fiu-mmc-28-caescir-hs-stem-fellow/">Learn More...</a>
+                </mj-text>
+                        <mj-spacer height="2px" />
+                <mj-divider border-color="#F8C93E"></mj-divider>
 
                 <mj-text font-size="15px" font-weight="600" color="#000" align="center">
-                        <a href="https://careerpath.cis.fiu.edu/job/american-express-company-phoenix-az-ft-lauderdale-fl-and-new-york-ny-6-campus-undergraduate-2020-technology-software-engineering-internship/">Campus Undergraduate – 2020 Technology Software Engineering Internship</a>
+                        <a href="https://careerpath.cis.fiu.edu/job/amepower-solutions-in-power-electronics-doral-florida-6-entry-level-computer-science-mobile-app-developer-co-op-fall2019-spring-2020/">Entry Level – Computer Science – Mobile App Developer CO-OP (Fall2019/Spring 2020)</a>
+                </mj-text>
+                <mj-text font-size="14px" color="#000">
+                    AmePower CO-OP program cultivates technical problem-solving skills by developing different engineering projects driven by real AmePower business priorities. Experience and training combined with mentoring and guidance from assignment managers, prepare members with the technical skills and values needed to achieve a successful entry-level engineering career. Participants will have the opportunity to interact with different departments to learn towards engineering and other real-world closely related roles such as; Design, Quality, Production, Reliability, Customer Support, among other areas.
+                </mj-text>
+                <mj-text>
+                        <a href="https://careerpath.cis.fiu.edu/job/amepower-solutions-in-power-electronics-doral-florida-6-entry-level-computer-science-mobile-app-developer-co-op-fall2019-spring-2020/">Learn More...</a>
+                </mj-text>
+                        <mj-spacer height="2px" />
+                <mj-divider border-color="#F8C93E"></mj-divider>
+
+                <mj-text font-size="15px" font-weight="600" color="#000" align="center">
+                        <a href="https://careerpath.cis.fiu.edu/job/lc-neighborhood-it-miami-fl-5-computer-consultant/">Computer Consultant</a>
+                </mj-text>
+                <mj-text font-size="14px" color="#000">
+                    LcNeighborhood-IT was founded with the intent of adding those with the need of computer repair services. Neighborhood-IT was founded in 2005 by  Mr. Leslie Calvo.
+
+                    LcNeighborhood-IT has now grown to expand the service not only to the computer repair but as well to Data Recovery & Management, Implementation of private & public networks, Server installation & Web Design.
+                </mj-text>
+                <mj-text>
+                        <a href="https://careerpath.cis.fiu.edu/job/lc-neighborhood-it-miami-fl-5-computer-consultant/">Learn More...</a>
+                </mj-text>
+                        <mj-spacer height="2px" />
+                <mj-divider border-color="#F8C93E"></mj-divider>
+
+                <mj-text font-size="15px" font-weight="600" color="#000" align="center">
+                        <a href="https://careerpath.cis.fiu.edu/job/sharp-marketing-work-from-home-5-part-time-web-app-developer/">Part Time Web App Developer</a>
+                </mj-text>
+                <mj-text font-size="14px" color="#000">
+                  Sharp Marketing is seeking a skilled Web Developer who will be responsible for the creation of a Software-as-a-Service (SAAS) solution that will be used for companies in our industry. The software is meant for a B2B audience and is related to the collection and management of tax certificates.
+
+                  To succeed in this role, you will need to be proficient in HTML 5, CSS, WordPress, Database Management and have solid knowledge in programming applications. You will also need to be able to meet strict milestone deliverables that will be mutually agreed upon the beginning of the project.
+                </mj-text>
+                <mj-text>
+                        <a href="https://careerpath.cis.fiu.edu/job/sharp-marketing-work-from-home-5-part-time-web-app-developer/">Learn More...</a>
+                </mj-text>
+			<mj-spacer height="2px" />
+                <mj-divider border-color="#F8C93E"></mj-divider>
+
+             
+               <mj-text font-size="15px" font-weight="600" color="#000" align="center">
+                  <a href="https://careerpath.cis.fiu.edu/job/american-express-company-phoenix-az-ft-lauderdale-fl-and-new-york-ny-6-campus-undergraduate-2020-technology-software-engineering-internship/">Campus Undergraduate – 2020 Technology Software Engineering Internship</a>
                 </mj-text>
                 <mj-text font-size="14px" color="#000">
                         Join our 10 week paid summer internship program where you will have opportunities for development, networking and also engage with our Executives. A summer internship at American Express will give you the chance to influence and strengthen the core businesses across the organization.
 
-Interns are a member of a product engineering or delivery and integration team. We will place you on a scrum team where you will collaborate with colleagues and our business partners. So if you are dedicated to the newest technology and motivating others, start your career here.
+                        Interns are a member of a product engineering or delivery and integration team. We will place you on a scrum team where you will collaborate with colleagues and our business partners. So if you are dedicated to the newest technology and motivating others, start your career here.
                 </mj-text>
                 <mj-text>
-                        <a href="https://careerpath.cis.fiu.edu/job/american-express-company-phoenix-az-ft-lauderdale-fl-and-new-york-ny-6-campus-undergraduate-2020-technology-software-engineering-internship/">Learn More...</a>
-                </mj-text>
-                        <mj-spacer height="2px" />
-                <mj-divider border-color="#F8C93E"></mj-divider>
-
-
-		<mj-text font-size="15px" font-weight="600" color="#000" align="center">
-                        <a href="https://careerpath.cs.fiu.edu/job/emerge-americas-miami-8-emerge-americas-fellowship/">Emerge Americas Fellowship</a>
-                </mj-text>
-                <mj-text font-size="14px" color="#000">
-			The Fellows will participate in an educational and leadership development program led by eMerge Americas staff and partners, that will help orient them on the landscape of the South Florida tech and entrepreneurial ecosystem (i.e. history, key stakeholders, etc.). The Fellows will also receive practical professional experience through job placement at leading South Florida-based tech companies and ventures.
-                </mj-text>
                 <mj-text>
-                        <a href="https://careerpath.cs.fiu.edu/job/emerge-americas-miami-8-emerge-americas-fellowship/">Learn More...</a>
-                </mj-text>
-                        <mj-spacer height="2px" />
-                <mj-divider border-color="#F8C93E"></mj-divider>
-
-
-		<mj-text font-size="15px" font-weight="600" color="#000" align="center">
-			<a href="https://careerpath.cis.fiu.edu/job/kleiner-perkins-fellows-8-kp-fellows-program-product-design-engineering/">KP Fellows Program (Product, Design, Engineering)</a>
-		</mj-text>
-		<mj-text font-size="14px" color="#000">
-			The KP Fellows Program is a unique, career-defining opportunity for technical students who are interested in pursuing technology, entrepreneurship, design, and startups. Engineering and Design Fellows work with one of our company partners over the summer where they develop and hone their technical skills and are mentored by an executive within the company. Product Fellows will spend a full year working with one of our company partners.
-		</mj-text>
-		<mj-text>
-			<a href="https://careerpath.cis.fiu.edu/job/kleiner-perkins-fellows-8-kp-fellows-program-product-design-engineering/">Learn More...</a>
-		</mj-text>
-			<mj-spacer height="2px" />
-		<mj-divider border-color="#F8C93E"></mj-divider>
-	
-
-        	<mj-text font-size="15px" font-weight="600" color="#000" align="center">
-                        <a href="https://careerpath.cis.fiu.edu/job/fiu-panthersoft-fiu-miami-fl-7-erp-application-developer-i/">ERP Application Developer I</a>
-                </mj-text>
-                <mj-text font-size="14px" color="#000">
-                        Entry level developer position at PantherSoft (FIU). This is a full-time position with benefits and tuition waiver for recent graduates of CS/IT with programming experience. Work with Oracle ERP PeopleSoft systems, FIU Mobile, Business Intelligence, Integration platforms, chatbots, and other enterprise systems.
-                </mj-text>
-                <mj-text>
-                        <a href="https://careerpath.cis.fiu.edu/job/fiu-panthersoft-fiu-miami-fl-7-erp-application-developer-i/">Learn More...</a>
-                </mj-text>
+                    <a href="https://careerpath.cis.fiu.edu/job/american-express-company-phoenix-az-ft-lauderdale-fl-and-new-york-ny-6-campus-undergraduate-2020-technology-software-engineering-internship/">Learn More...</a>
+                </mj-text>  
 
          </mj-section>
 
@@ -295,7 +308,7 @@ async function mail(html) {
   await transporter.sendMail({
     from: email,
     to: process.env.TO_EMAIL,
-    subject: "FIUCEC Events Newsletter",
+    subject: "FIUSCIS Events Newsletter",
     html
   });
 
