@@ -116,8 +116,8 @@ async function parseURL(calendar) {
   });
 
   console.log("2week date: " + nextweek);
-  console.log("Index: " + index);
-  console.log("Save the Date results: " + reindex);
+  // console.log("Index: " + index);
+  // console.log("Save the Date results: " + reindex);
 
   //console.log(getUnique(results, 'link'));
  
@@ -130,16 +130,16 @@ async function parseURL(calendar) {
 
 // Career Path
 
-const jobsAPI = `https://careerpath.cis.fiu.edu/wp-json/wp/v2/job-listings?per_page=3`;
+//const jobsAPI = `https://careerpath.cis.fiu.edu/wp-json/wp/v2/job-listings?per_page=3`;
 //const jobPosting = window.getElementById('jobPosting');
-const dom = new JSDOM(`<div id="jobPosting"></div>`);
+//const dom = new JSDOM(`<div id="jobPosting"></div>`);
 
-const jobPosts = 
-function jobsData() {
-  fetch(jobsAPI)
-    .then((res) => res.json())
-    .then((data) => {
-      data.json
+// const jobPosts = 
+// function jobsData() {
+//   fetch(jobsAPI)
+//     .then((res) => res.json())
+//     .then((data) => {
+//       data.json
       // let output = '';
       // data.map((item) => {
       //   output += `
@@ -158,12 +158,12 @@ function jobsData() {
       //dom.window.document.getElementById('jobPosting').innerHTML = output;
       //console.log(`Inside the function: ${output}`);
       //jobFeed = output;
-    })
-    .catch(err => console.log(err));
-}
+//     })
+//     .catch(err => console.log(err));
+// }
 
 //console.log(jobsData);
-console.log(`Please Show!: ${jobPosts}`);
+//console.log(`Please Show!: ${jobPosts}`);
 
 // const jobPosts = fetch(jobsAPI)
 //     .then((res) => res.json())
@@ -190,8 +190,21 @@ console.log(`Please Show!: ${jobPosts}`);
 
 //console.log(jobPosts);
 
+fetch(jobsAPI)
+  .then(res => res.json())
+  .then(jobs => {
+    jobs.map(job => {
+      const {
+        title,
+        link,
+        content
+      } = job;
+    })
+  })
+  .catch(err => console.log(err));
+
 // Using MJML to format HTML Email
-function formatHTML(events, calendar) {
+function formatHTML(events, calendar, job) {
 
   const {
     html
@@ -276,7 +289,18 @@ function formatHTML(events, calendar) {
   
     		<mj-raw>
 		<!-- Career Path API TEXT -->
-    <div id="jobPosting"></div>
+
+            <p font-size="15px" font-weight="600" color="#000" align="center">
+            <a href="${job.link}">${job.title.rendered}</a>
+        </p>
+        <p font-size="14px" color="#000">
+            ${job.content.rendered}
+        </p>
+        <p>
+            <a href="${job.link}">Learn More...</a>
+        </p>
+        <hr border-color="red" height="2px" />
+
     < /mj-raw>
 
 
