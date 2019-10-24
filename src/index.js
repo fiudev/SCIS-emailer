@@ -19,7 +19,7 @@ const parser = new Parser({
 
 const SCIS = {
   title: "School of Computing and Information Sciences",
-  cover: "https://www.cis.fiu.edu/wp-content/uploads/2019/10/scis-newsletter-cover-10102019.png",
+  cover: "https://www.cis.fiu.edu/wp-content/uploads/2019/10/scis-newsletter-cover-10242019.png",
   link: "https://www.cis.fiu.edu/events",
   calendar_url: "https://calendar.fiu.edu/department/computing_information_sciences/calendar/xml",
   date: moment().format('dddd, MMMM Do YYYY')
@@ -286,7 +286,7 @@ function formatHTML(events, calendar) {
 
 	<mj-raw>
 	<!-- Google Analytics  -->
-	  <img src="https://www.google-analytics.com/collect?v=1&tid=UA-72593959-1&cid=555&aip=1&t=event&ec=email&ea=open&dp=%2Femail%2Fnewsletter&dt=fiuwsn09192019">
+	  <img src="https://www.google-analytics.com/collect?v=1&tid=UA-72593959-1&cid=555&aip=1&t=event&ec=email&ea=open&dp=%2Femail%2Fnewsletter&dt=fiuwsn10242019">
 	</mj-raw>
 
     </mj-body>
