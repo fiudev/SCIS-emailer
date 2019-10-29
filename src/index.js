@@ -72,8 +72,8 @@ async function parseURL(calendar) {
       contentSnippet,
       link
     } = event;
+
     const datetime = new Date(date);
-    //const {url} = await bitly.shorten(link);
     const media = event["media:content"][0]["$"].url;
 
     // console.log("List Event for 2 weeks: " + event);
@@ -91,7 +91,7 @@ async function parseURL(calendar) {
       media
     };
   });
-
+  
   let results = await Promise.all(promises);
 
   // Remove duplicate objects from the array of post
@@ -130,6 +130,34 @@ async function parseURL(calendar) {
 
 // Career Path
 
+ async function jobsFun() {
+   try {
+    
+    const resp = await fetch(jobsAPI);
+    let jobs = await resp.json()
+    await jobs.map(async job => {
+      const {
+        content,
+        title,
+        link
+      } = job;
+    })
+    return {
+      content: content.rendered,
+      title: title.rendered,
+      link
+    };
+
+   } catch (err) {
+     console.error(err)
+   }
+  
+}
+
+ console.log(`Async: `, jobsFun())
+
+//let jobs = jobsFun();
+
 //const jobsAPI = `https://careerpath.cis.fiu.edu/wp-json/wp/v2/job-listings?per_page=3`;
 //const jobPosting = window.getElementById('jobPosting');
 //const dom = new JSDOM(`<div id="jobPosting"></div>`);
@@ -165,46 +193,8 @@ async function parseURL(calendar) {
 //console.log(jobsData);
 //console.log(`Please Show!: ${jobPosts}`);
 
-// const jobPosts = fetch(jobsAPI)
-//     .then((res) => res.json())
-//     .then((jobs) => {
-//       let output = '';
-//       jobs.map(job => {
-//         output += `
-//             <p font-size="15px" font-weight="600" color="#000" align="center">
-//             <a href="${job.link}">${job.title.rendered}</a>
-//         </p>
-//         <p font-size="14px" color="#000">
-//             ${job.content.rendered}
-//         </p>
-//         <p>
-//             <a href="${job.link}">Learn More...</a>
-//         </p>
-//         <hr border-color="red" height="2px" />
-//             `;
-//       });
-//       //jobPosting.innerHTML = output;
-//       //console.log(`Inside the function: ${output}`);
-//     })
-//     .catch(err => console.log(err));
-
-//console.log(jobPosts);
-
-fetch(jobsAPI)
-  .then(res => res.json())
-  .then(jobs => {
-    jobs.map(job => {
-      const {
-        title,
-        link,
-        content
-      } = job;
-    })
-  })
-  .catch(err => console.log(err));
-
 // Using MJML to format HTML Email
-function formatHTML(events, calendar, job) {
+function formatHTML(events, calendar, jobs) {
 
   const {
     html
@@ -289,18 +279,22 @@ function formatHTML(events, calendar, job) {
   
     		<mj-raw>
 		<!-- Career Path API TEXT -->
-
-            <p font-size="15px" font-weight="600" color="#000" align="center">
-            <a href="${job.link}">${job.title.rendered}</a>
-        </p>
-        <p font-size="14px" color="#000">
-            ${job.content.rendered}
-        </p>
-        <p>
+        ${jobs.map(
+          job =>
+        `
+          <p font-size="15px" font-weight="600" color="#000" align="center">
+            <a href="${job.link}">${job.title}</a>
+          </p>
+          <p font-size="14px" color="#000">
+            ${job.content}
+          </p>
+          <p>
             <a href="${job.link}">Learn More...</a>
-        </p>
-        <hr border-color="red" height="2px" />
-
+          </p>
+      
+          <hr border-color="red" height="2px" />
+        `
+        )}
     < /mj-raw>
 
 
