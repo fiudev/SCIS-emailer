@@ -87,7 +87,7 @@ async function parseURL(calendar) {
       media
     };
   });
-  
+
   let results = await Promise.all(promises);
 
   // Remove duplicate objects from the array of post
@@ -116,7 +116,7 @@ async function parseURL(calendar) {
   // console.log("Save the Date results: " + reindex);
 
   //console.log(getUnique(results, 'link'));
- 
+
   return {
     before: getUnique(index, 'link'),
     after: getUnique(reindex, 'link')
@@ -149,36 +149,35 @@ async function parseURL(calendar) {
 //  console.log(`Async: `, jobsFun())
 
 
-//const jobPosts = 
-// function jobsData() {
-//   fetch(jobsAPI)
-//     .then((res) => res.json())
-//     .then((data) => {
-//       data.json
-//       let output = '';
-//       data.map((item) => {
-//         output += `
-//             <mj-section font-size="15px" font-weight="600" color="#000" align="center">
-//             <a href="${item.link}">${item.title.rendered}</a>
-//             </mj-section>
-//             <mj-section font-size="14px" color="#000">
-//                 ${item.content.rendered}
-//             </mj-section>
-//             <mj-section>
-//                 <a href="${item.link}">Learn More...</a>
-//             </mj-section>
-//             <hr border-color="red" height="2px" />
-//             `;
-//       });
-//       //console.log(`Inside the function: ${output}`);
-//       jobs = output;
-//       //console.log(`JOBS Posting: `, jobs);
-//     })
-//     .catch(err => console.log(err));
-// }
+let jobPosts =
+  function jobsData() {
+    fetch(jobsAPI)
+      .then((res) => res.json())
+      .then((data) => {
+        data.json
+        //let output = '';
+        data.map((item) => {
+          //console.log(`This is an ITEM: `, item)
+          output += `
+              <mj-section font-size="15px" font-weight="600" color="#000" align="center">
+              <a href="${item.link}">${item.title.rendered}</a>
+              </mj-section>
+              <mj-section font-size="14px" color="#000">
+                  ${item.content.rendered}
+              </mj-section>
+              <mj-section>
+                  <a href="${item.link}">Learn More...</a>
+              </mj-section>
+              <hr border-color="red" height="2px" />
+              `;
+        });
+        //console.log(`Inside the function: ${output}`); //I want this!!
+        return output;
+      })
+      .catch(err => console.log(err));
+  }
 
-//console.log('Display list: ', jobsData());
-//console.log(`Please Show!: ${jobPosts}`);
+console.log(`function Var: `, jobsData().output)
 
 // fetch(jobsAPI)
 //   .then(res => res.json())
@@ -186,18 +185,6 @@ async function parseURL(calendar) {
 
 // Using MJML to format HTML Email
 function formatHTML(events, calendar) {
-
- const displayJobs = fetch(jobsAPI)
-    .then(res => res.json())
-    .then(jobs => {
-      return {
-       content: content.rendered,
-       title: title.rendered,
-       link
-    };
-    })
-    .catch(err => console.log(`The fetch is not working!`, err));
-      console.log(`Display: `, displayJobs)
 
   const {
     html
@@ -282,7 +269,7 @@ function formatHTML(events, calendar) {
   
     		<mj-raw>
     <!-- Career Path API TEXT -->
-    ${displayJobs}
+  
     < /mj-raw>
 
             <mj-spacer height="2px" />
@@ -317,20 +304,20 @@ function formatHTML(events, calendar) {
 }
 
 async function mail(html) {
-  // Local Server
-  // const transporter = nodemailer.createTransport({
-  //   host: "smtp.cs.fiu.edu",
-  //   port: 25,
-  // });
+  //Local Server
+  const transporter = nodemailer.createTransport({
+    host: "smtp.cs.fiu.edu",
+    port: 25,
+  });
 
   // Gmail Version
-  const transporter = nodemailer.createTransport({
-    service: "gmail",
-    auth: {
-      user: email,
-      pass: password
-    }
-  });
+  // const transporter = nodemailer.createTransport({
+  //   service: "gmail",
+  //   auth: {
+  //     user: email,
+  //     pass: password
+  //   }
+  // });
 
   await transporter.sendMail({
     from: email,
