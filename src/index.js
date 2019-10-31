@@ -4,10 +4,6 @@ const mjml = require("mjml");
 const nodemailer = require("nodemailer");
 const moment = require("moment");
 const fetch = require('node-fetch');
-const jsdom = require("jsdom");
-const {
-  JSDOM
-} = jsdom;
 
 const email = process.env.MAIL_EMAIL;
 const password = process.env.MAIL_PASSWORD;
@@ -130,71 +126,78 @@ async function parseURL(calendar) {
 
 // Career Path
 
- async function jobsFun() {
-   try {
-    
-    const resp = await fetch(jobsAPI);
-    let jobs = await resp.json()
-    await jobs.map(async job => {
-      const {
-        content,
-        title,
-        link
-      } = job;
-    })
-    return {
-      content: content.rendered,
-      title: title.rendered,
-      link
-    };
+//  async function jobsFun() {
+//    try {
+//     const resp = await fetch(jobsAPI);
+//     let jobs = await resp.json()
+//     await jobs.map(async job => {
+//       const {
+//         content,
+//         title,
+//         link
+//       } = job;
+//     })
+//     return {
+//       content: content.rendered,
+//       title: title.rendered,
+//       link
+//     };
+//    } catch (err) {
+//      console.error(err)
+//    }
+// }
+//  console.log(`Async: `, jobsFun())
 
-   } catch (err) {
-     console.error(err)
-   }
-  
-}
 
- console.log(`Async: `, jobsFun())
-
-//let jobs = jobsFun();
-
-//const jobsAPI = `https://careerpath.cis.fiu.edu/wp-json/wp/v2/job-listings?per_page=3`;
-//const jobPosting = window.getElementById('jobPosting');
-//const dom = new JSDOM(`<div id="jobPosting"></div>`);
-
-// const jobPosts = 
+//const jobPosts = 
 // function jobsData() {
 //   fetch(jobsAPI)
 //     .then((res) => res.json())
 //     .then((data) => {
 //       data.json
-      // let output = '';
-      // data.map((item) => {
-      //   output += `
-      //       <p font-size="15px" font-weight="600" color="#000" align="center">
-      //       <a href="${item.link}">${item.title.rendered}</a>
-      //   </p>
-      //   <p font-size="14px" color="#000">
-      //       ${item.content.rendered}
-      //   </p>
-      //   <p>
-      //       <a href="${item.link}">Learn More...</a>
-      //   </p>
-      //   <hr border-color="red" height="2px" />
-      //       `;
-      // });
-      //dom.window.document.getElementById('jobPosting').innerHTML = output;
-      //console.log(`Inside the function: ${output}`);
-      //jobFeed = output;
+//       let output = '';
+//       data.map((item) => {
+//         output += `
+//             <mj-section font-size="15px" font-weight="600" color="#000" align="center">
+//             <a href="${item.link}">${item.title.rendered}</a>
+//             </mj-section>
+//             <mj-section font-size="14px" color="#000">
+//                 ${item.content.rendered}
+//             </mj-section>
+//             <mj-section>
+//                 <a href="${item.link}">Learn More...</a>
+//             </mj-section>
+//             <hr border-color="red" height="2px" />
+//             `;
+//       });
+//       //console.log(`Inside the function: ${output}`);
+//       jobs = output;
+//       //console.log(`JOBS Posting: `, jobs);
 //     })
 //     .catch(err => console.log(err));
 // }
 
-//console.log(jobsData);
+//console.log('Display list: ', jobsData());
 //console.log(`Please Show!: ${jobPosts}`);
 
+// fetch(jobsAPI)
+//   .then(res => res.json())
+//   .then(jobs => formatHTML(jobs));
+
 // Using MJML to format HTML Email
-function formatHTML(events, calendar, jobs) {
+function formatHTML(events, calendar) {
+
+ const displayJobs = fetch(jobsAPI)
+    .then(res => res.json())
+    .then(jobs => {
+      return {
+       content: content.rendered,
+       title: title.rendered,
+       link
+    };
+    })
+    .catch(err => console.log(`The fetch is not working!`, err));
+      console.log(`Display: `, displayJobs)
 
   const {
     html
@@ -278,26 +281,9 @@ function formatHTML(events, calendar, jobs) {
 	  </mj-section>
   
     		<mj-raw>
-		<!-- Career Path API TEXT -->
-        ${jobs.map(
-          job =>
-        `
-          <p font-size="15px" font-weight="600" color="#000" align="center">
-            <a href="${job.link}">${job.title}</a>
-          </p>
-          <p font-size="14px" color="#000">
-            ${job.content}
-          </p>
-          <p>
-            <a href="${job.link}">Learn More...</a>
-          </p>
-      
-          <hr border-color="red" height="2px" />
-        `
-        )}
+    <!-- Career Path API TEXT -->
+    ${displayJobs}
     < /mj-raw>
-
-
 
             <mj-spacer height="2px" />
           <mj-divider border-color="#F8C93E"></mj-divider>
