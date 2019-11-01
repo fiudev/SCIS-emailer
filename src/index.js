@@ -1,9 +1,11 @@
-const dotENV = require('dotenv').config();
+const dotENV = require("dotenv").config();
 const Parser = require("rss-parser");
 const mjml = require("mjml");
 const nodemailer = require("nodemailer");
 const moment = require("moment");
-const fetch = require('node-fetch');
+const fetch = require("node-fetch");
+const jsdom = require("jsdom");
+const { JSDOM } = jsdom;
 
 const email = process.env.MAIL_EMAIL;
 const password = process.env.MAIL_PASSWORD;
@@ -12,23 +14,30 @@ const jobsAPI = process.env.JOBS_API;
 const parser = new Parser({
   customFields: {
     item: [
-      ["media:content", "media:content", {
-        keepArray: true
-      }]
+      [
+        "media:content",
+        "media:content",
+        {
+          keepArray: true
+        }
+      ]
     ]
   }
 });
 
 const SCIS = {
   title: "School of Computing and Information Sciences",
-  cover: "https://www.cis.fiu.edu/wp-content/uploads/2019/09/scis-newsletter-cover-update-09262019-1.png",
+  cover:
+    "https://www.cis.fiu.edu/wp-content/uploads/2019/09/scis-newsletter-cover-update-09262019-1.png",
   link: "https://www.cis.fiu.edu/events",
-  calendar_url: "https://calendar.fiu.edu/department/computing_information_sciences/calendar/xml",
-  date: moment().format('dddd, MMMM Do YYYY')
+  calendar_url:
+    "https://calendar.fiu.edu/department/computing_information_sciences/calendar/xml",
+  date: moment().format("dddd, MMMM Do YYYY")
 };
 const CEC = {
   title: "College of Engineering",
-  cover: "https://www.cis.fiu.edu/wp-content/uploads/2019/07/1-update-CEC-Email-Newsletter-header-min.jpg",
+  cover:
+    "https://www.cis.fiu.edu/wp-content/uploads/2019/07/1-update-CEC-Email-Newsletter-header-min.jpg",
   link: "https://cec.fiu.edu/",
   calendar_url: "https://calendar.fiu.edu/department/cec/calendar/xml"
 };
@@ -49,9 +58,7 @@ const calendar = SCIS;
 
 async function parseURL(calendar) {
   const feed = await parser.parseURL(calendar.calendar_url);
-  const {
-    items: events
-  } = feed;
+  const { items: events } = feed;
 
   const date = new Date();
   const today = date.getDate();
@@ -62,12 +69,7 @@ async function parseURL(calendar) {
   );
 
   const promises = events.map(async event => {
-    const {
-      date,
-      title,
-      contentSnippet,
-      link
-    } = event;
+    const { date, title, contentSnippet, link } = event;
 
     const datetime = new Date(date);
     const media = event["media:content"][0]["$"].url;
@@ -97,17 +99,18 @@ async function parseURL(calendar) {
       // store the keys of the unique objects
       .map((e, i, final) => final.indexOf(e) === i && i)
       // eliminate the dead keys & store unique objects
-      .filter(e => results[e]).map(e => results[e]);
+      .filter(e => results[e])
+      .map(e => results[e]);
 
     return unique;
   }
   // Remove objects by date range
-  index = results.filter(function (obj) {
+  index = results.filter(function(obj) {
     return obj.date <= nextweek;
   });
 
   // Save the Date: Remove objects by date range
-  reindex = results.filter(function (obj) {
+  reindex = results.filter(function(obj) {
     return obj.date > nextweek;
   });
 
@@ -118,66 +121,39 @@ async function parseURL(calendar) {
   //console.log(getUnique(results, 'link'));
 
   return {
-    before: getUnique(index, 'link'),
-    after: getUnique(reindex, 'link')
-  }
-
+    before: getUnique(index, "link"),
+    after: getUnique(reindex, "link")
+  };
 }
 
 // Career Path
 
-//  async function jobsFun() {
-//    try {
-//     const resp = await fetch(jobsAPI);
-//     let jobs = await resp.json()
-//     await jobs.map(async job => {
-//       const {
-//         content,
-//         title,
-//         link
-//       } = job;
-//     })
-//     return {
-//       content: content.rendered,
-//       title: title.rendered,
-//       link
-//     };
-//    } catch (err) {
-//      console.error(err)
-//    }
-// }
-//  console.log(`Async: `, jobsFun())
-
-
-let jobPosts =
-  function jobsData() {
-    fetch(jobsAPI)
-      .then((res) => res.json())
-      .then((data) => {
-        data.json
-        //let output = '';
-        data.map((item) => {
-          //console.log(`This is an ITEM: `, item)
-          output += `
-              <mj-section font-size="15px" font-weight="600" color="#000" align="center">
-              <a href="${item.link}">${item.title.rendered}</a>
-              </mj-section>
-              <mj-section font-size="14px" color="#000">
-                  ${item.content.rendered}
-              </mj-section>
-              <mj-section>
-                  <a href="${item.link}">Learn More...</a>
-              </mj-section>
-              <hr border-color="red" height="2px" />
-              `;
-        });
-        //console.log(`Inside the function: ${output}`); //I want this!!
-        return output;
-      })
-      .catch(err => console.log(err));
-  }
-
-console.log(`function Var: `, jobsData().output)
+//let jobPosts =
+async function jobsData() {
+  let res = await fetch(jobsAPI);
+  let data = await res.json();
+  return data;
+}
+// jobsData().then(data => {
+//   data.json
+//   let output = ''
+//   data.map(item => {
+//     output += `
+//       <mj-section font-size="15px" font-weight="600" color="#000" align="center">
+//         <a href="${item.link}">${item.title.rendered}</a>
+//       </mj-section>
+//       <mj-section font-size="14px" color="#000">
+//         ${item.content.rendered}
+//       </mj-section>
+//       <mj-section>
+//         <a href="${item.link}">Learn More...</a>
+//       </mj-section>
+//       <hr border-color="red" height="2px" />
+//     `
+//   })
+//   console.log(`Inside the function: ${output}`); //I want this!!
+//   output;
+// })
 
 // fetch(jobsAPI)
 //   .then(res => res.json())
@@ -185,23 +161,24 @@ console.log(`function Var: `, jobsData().output)
 
 // Using MJML to format HTML Email
 function formatHTML(events, calendar) {
-
-  const {
-    html
-  } = mjml(
+  const { html } = mjml(
     `
   <mjml>
     <mj-body width="700px">
        
         <mj-section>
           <mj-column width="100%">
-            <mj-image src=${calendar.cover} alt="header image" fluid-on-mobile="true" padding="0px"></mj-image>
+            <mj-image src=${
+              calendar.cover
+            } alt="header image" fluid-on-mobile="true" padding="0px"></mj-image>
           </mj-column>
         </mj-section>
 
         <mj-section background-color='#fff'>
 	  <mj-column>
-	    <mj-text align="center" font-size="21px" font-weight="500" color="#030303" padding="0 15px">${calendar.date}</mj-text>
+	    <mj-text align="center" font-size="21px" font-weight="500" color="#030303" padding="0 15px">${
+        calendar.date
+      }</mj-text>
 	  </mj-column>
         </mj-section>
 
@@ -210,15 +187,13 @@ function formatHTML(events, calendar) {
             
             ${events.before.map(
               event =>
-              `
+                `
               <mj-section>
                 <mj-raw>
                   <!-- Left image -->
                 </mj-raw>
                 <mj-column align="center">
-                  <mj-image width="200px" src=${
-                    event.media
-                  } align="center" fluid-on-mobile="true"></mj-image>
+                  <mj-image width="200px" src=${event.media} align="center" fluid-on-mobile="true"></mj-image>
                 </mj-column>
                 <mj-raw>
                   <!-- right paragraph -->
@@ -227,9 +202,7 @@ function formatHTML(events, calendar) {
                   <mj-text font-size="20px" font-weight="500" font-family="Helvetica Neue" color="#081D3F">
                     ${event.title}
                   </mj-text>
-                  <mj-text font-family="Helvetica Neue" color="#626262" font-size="14px" >${
-                    event.snippet
-                  }...</mj-text>
+                  <mj-text font-family="Helvetica Neue" color="#626262" font-size="14px" >${event.snippet}...</mj-text>
                   <mj-text color="#081D3F"><a href=${event.link}>
                   Read more..</a></mj-text>
               <mj-spacer height="0px" />
@@ -237,7 +210,7 @@ function formatHTML(events, calendar) {
               </mj-section>
               <mj-divider border-color="#081E3F" border-style="solid" border-width="1px" padding-left="100px" padding-right="100px" padding-bottom="5px" padding-top="5px"></mj-divider>
               `
-              )}
+            )}
 
             <mj-section background-color="#081D3F">
             <mj-text font-size="22px" font-weight="500" color="#fff" align="center">
@@ -250,11 +223,11 @@ function formatHTML(events, calendar) {
             </mj-raw>
             ${events.after.map(
               event =>
-             `
+                `
              <mj-text align="center" font-size="15px" font-weight="500" font-family="Helvetica Neue" color="#081D3F">
                <li> <a href=${event.link}> ${event.title} </a></li>
              </mj-text>
-	     <mj-spacer height="2px" />  
+	          <mj-spacer height="2px" />  
             `
             )}
 	    <mj-raw>
@@ -269,7 +242,26 @@ function formatHTML(events, calendar) {
   
     		<mj-raw>
     <!-- Career Path API TEXT -->
-  
+      ${jobsData().then(data => {
+        data.json;
+        let output = "";
+        data.map(item => {
+          output += `
+      <mj-section font-size="15px" font-weight="600" color="#000" align="center">
+        <a href="${item.link}">${item.title.rendered}</a>
+      </mj-section>
+      <mj-section font-size="14px" color="#000">
+        ${item.content.rendered}
+      </mj-section>
+      <mj-section>
+        <a href="${item.link}">Learn More...</a>
+      </mj-section>
+      <hr border-color="red" height="2px" />
+    `;
+        });
+        //console.log(`Inside the function: ${output}`)
+        output.textContent;
+      })}
     < /mj-raw>
 
             <mj-spacer height="2px" />
@@ -295,7 +287,8 @@ function formatHTML(events, calendar) {
 
     </mj-body>
   </mjml>
-`, {
+`,
+    {
       beautify: true
     }
   );
@@ -305,19 +298,19 @@ function formatHTML(events, calendar) {
 
 async function mail(html) {
   //Local Server
-  const transporter = nodemailer.createTransport({
-    host: "smtp.cs.fiu.edu",
-    port: 25,
-  });
+  // const transporter = nodemailer.createTransport({
+  //   host: "smtp.cs.fiu.edu",
+  //   port: 25,
+  // });
 
   // Gmail Version
-  // const transporter = nodemailer.createTransport({
-  //   service: "gmail",
-  //   auth: {
-  //     user: email,
-  //     pass: password
-  //   }
-  // });
+  const transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      user: email,
+      pass: password
+    }
+  });
 
   await transporter.sendMail({
     from: email,
@@ -326,7 +319,7 @@ async function mail(html) {
     html
   });
 
-  transporter.verify(function (error, success) {
+  transporter.verify(function(error, success) {
     if (error) {
       console.log(error);
     } else {
