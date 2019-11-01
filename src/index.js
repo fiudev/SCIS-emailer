@@ -129,14 +129,14 @@ async function parseURL(calendar) {
 // Career Path
 
 //let jobPosts =
-async function jobsData() {
+async function jobsData(jobsAPI) {
   let res = await fetch(jobsAPI);
   let data = await res.json();
   return data;
 }
 // jobsData().then(data => {
-//   data.json
-//   let output = ''
+//   console.log(data);
+//   let output = "";
 //   data.map(item => {
 //     output += `
 //       <mj-section font-size="15px" font-weight="600" color="#000" align="center">
@@ -149,18 +149,19 @@ async function jobsData() {
 //         <a href="${item.link}">Learn More...</a>
 //       </mj-section>
 //       <hr border-color="red" height="2px" />
-//     `
-//   })
-//   console.log(`Inside the function: ${output}`); //I want this!!
-//   output;
-// })
+//     `;
+//   });
+//   //console.log(`Inside the function: ${output}`); //I want this!!
+//   console.log(output);
+// });
+// console.log(jobsData.output);
 
 // fetch(jobsAPI)
 //   .then(res => res.json())
 //   .then(jobs => formatHTML(jobs));
 
 // Using MJML to format HTML Email
-function formatHTML(events, calendar) {
+function formatHTML(events, jobs, calendar) {
   const { html } = mjml(
     `
   <mjml>
@@ -238,31 +239,28 @@ function formatHTML(events, calendar) {
 	  	<mj-text font-size="22px" font-weight="500" color="#fff" align="center">
                 	Career Path
           	</mj-text>
-	  </mj-section>
+    </mj-section>
+    
+    <mj-section>
+      <mj-column width="600px" background-color="#FFF">
+      ${jobs.map(
+        item => `
+        <mj-text font-size="15px" font-weight="600" color="#000" align="center">
+          <a href="${item.link}">${item.title.rendered}</a>
+        </mj-text>
+        <mj-text font-size="14px" color="#000">
+          ${item.content.rendered}
+        </mj-text>
+        <mj-text>
+          <a href="${item.link}">Learn More...</a>
+        </mj-text>
+        <hr border-color="red" height="2px" />
+        `
+      )}
+      </mj-column>
+    </mj-section>
+    
   
-    		<mj-raw>
-    <!-- Career Path API TEXT -->
-      ${jobsData().then(data => {
-        data.json;
-        let output = "";
-        data.map(item => {
-          output += `
-      <mj-section font-size="15px" font-weight="600" color="#000" align="center">
-        <a href="${item.link}">${item.title.rendered}</a>
-      </mj-section>
-      <mj-section font-size="14px" color="#000">
-        ${item.content.rendered}
-      </mj-section>
-      <mj-section>
-        <a href="${item.link}">Learn More...</a>
-      </mj-section>
-      <hr border-color="red" height="2px" />
-    `;
-        });
-        //console.log(`Inside the function: ${output}`)
-        output.textContent;
-      })}
-    < /mj-raw>
 
             <mj-spacer height="2px" />
           <mj-divider border-color="#F8C93E"></mj-divider>
@@ -330,8 +328,10 @@ async function mail(html) {
 
 async function main() {
   const events = await parseURL(calendar).catch(console.error);
+  const jobs = await jobsData(jobsAPI).catch(console.error);
 
-  const html = formatHTML(events, calendar);
+  const html = formatHTML(events, jobs, calendar);
+  //console.log(html);
   await mail(html).catch(console.error);
 }
 
