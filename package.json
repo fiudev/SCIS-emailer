@@ -9,6 +9,7 @@
   "dependencies": {
     "bitly": "^6.1.0",
     "dotenv": "^8.1.0",
+    "jsdom": "^15.2.0",
     "lodash": "^4.17.13",
     "lodash.merge": "^4.6.2",
     "mem": "^5.1.1",
