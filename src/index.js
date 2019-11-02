@@ -4,8 +4,6 @@ const mjml = require("mjml");
 const nodemailer = require("nodemailer");
 const moment = require("moment");
 const fetch = require("node-fetch");
-const jsdom = require("jsdom");
-const { JSDOM } = jsdom;
 
 const email = process.env.MAIL_EMAIL;
 const password = process.env.MAIL_PASSWORD;
@@ -34,6 +32,7 @@ const SCIS = {
     "https://calendar.fiu.edu/department/computing_information_sciences/calendar/xml",
   date: moment().format("dddd, MMMM Do YYYY")
 };
+
 const CEC = {
   title: "College of Engineering",
   cover:
@@ -114,51 +113,22 @@ async function parseURL(calendar) {
     return obj.date > nextweek;
   });
 
+  //Console log the run date
   console.log("2week date: " + nextweek);
-  // console.log("Index: " + index);
-  // console.log("Save the Date results: " + reindex);
 
-  //console.log(getUnique(results, 'link'));
-
+  // Return First Set of Events Before and all the rest after
   return {
     before: getUnique(index, "link"),
     after: getUnique(reindex, "link")
   };
 }
 
-// Career Path
-
-//let jobPosts =
+// GET Career Path REST API
 async function jobsData(jobsAPI) {
   let res = await fetch(jobsAPI);
   let data = await res.json();
   return data;
 }
-// jobsData().then(data => {
-//   console.log(data);
-//   let output = "";
-//   data.map(item => {
-//     output += `
-//       <mj-section font-size="15px" font-weight="600" color="#000" align="center">
-//         <a href="${item.link}">${item.title.rendered}</a>
-//       </mj-section>
-//       <mj-section font-size="14px" color="#000">
-//         ${item.content.rendered}
-//       </mj-section>
-//       <mj-section>
-//         <a href="${item.link}">Learn More...</a>
-//       </mj-section>
-//       <hr border-color="red" height="2px" />
-//     `;
-//   });
-//   //console.log(`Inside the function: ${output}`); //I want this!!
-//   console.log(output);
-// });
-// console.log(jobsData.output);
-
-// fetch(jobsAPI)
-//   .then(res => res.json())
-//   .then(jobs => formatHTML(jobs));
 
 // Using MJML to format HTML Email
 function formatHTML(events, jobs, calendar) {
@@ -219,7 +189,7 @@ function formatHTML(events, jobs, calendar) {
               </mj-text>
             </mj-section>
  
-	    <mj-raw>
+	          <mj-raw>
               <ul>
             </mj-raw>
             ${events.after.map(
@@ -254,13 +224,12 @@ function formatHTML(events, jobs, calendar) {
         <mj-text>
           <a href="${item.link}">Learn More...</a>
         </mj-text>
-        <hr border-color="red" height="2px" />
+          <mj-spacer height="2px" />
+        <mj-divider border-color="#F8C93E"></mj-divider>
         `
       )}
       </mj-column>
     </mj-section>
-    
-  
 
             <mj-spacer height="2px" />
           <mj-divider border-color="#F8C93E"></mj-divider>
