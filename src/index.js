@@ -26,7 +26,7 @@ const parser = new Parser({
 const SCIS = {
   title: "School of Computing and Information Sciences",
   cover:
-    "https://www.cis.fiu.edu/wp-content/uploads/2019/09/scis-newsletter-cover-update-09262019-1.png",
+    "https://www.cis.fiu.edu/wp-content/uploads/2019/10/scis-newsletter-cover-10242019.png",
   link: "https://www.cis.fiu.edu/events",
   calendar_url:
     "https://calendar.fiu.edu/department/computing_information_sciences/calendar/xml",
@@ -230,9 +230,6 @@ function formatHTML(events, jobs, calendar) {
       )}
       </mj-column>
     </mj-section>
-
-            <mj-spacer height="2px" />
-          <mj-divider border-color="#F8C93E"></mj-divider>
 
            <mj-section background-color="#fff">
               <mj-text align="center" font-size="15px" font-weight="300" font-family="Helvetica Neue" color="#000">
