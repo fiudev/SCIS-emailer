@@ -25,18 +25,15 @@ const parser = new Parser({
 
 const SCIS = {
   title: "School of Computing and Information Sciences",
-  cover:
-    "https://www.cis.fiu.edu/wp-content/uploads/2019/10/scis-newsletter-cover-10242019.png",
+  cover: "https://www.cis.fiu.edu/wp-content/uploads/2019/10/scis-newsletter-cover-10242019.png",
   link: "https://www.cis.fiu.edu/events",
-  calendar_url:
-    "https://calendar.fiu.edu/department/computing_information_sciences/calendar/xml",
+  calendar_url: "https://calendar.fiu.edu/department/computing_information_sciences/calendar/xml",
   date: moment().format("dddd, MMMM Do YYYY")
 };
 
 const CEC = {
   title: "College of Engineering",
-  cover:
-    "https://www.cis.fiu.edu/wp-content/uploads/2019/07/1-update-CEC-Email-Newsletter-header-min.jpg",
+  cover: "https://www.cis.fiu.edu/wp-content/uploads/2019/07/1-update-CEC-Email-Newsletter-header-min.jpg",
   link: "https://cec.fiu.edu/",
   calendar_url: "https://calendar.fiu.edu/department/cec/calendar/xml"
 };
@@ -57,7 +54,9 @@ const calendar = SCIS;
 
 async function parseURL(calendar) {
   const feed = await parser.parseURL(calendar.calendar_url);
-  const { items: events } = feed;
+  const {
+    items: events
+  } = feed;
 
   const date = new Date();
   const today = date.getDate();
@@ -68,7 +67,12 @@ async function parseURL(calendar) {
   );
 
   const promises = events.map(async event => {
-    const { date, title, contentSnippet, link } = event;
+    const {
+      date,
+      title,
+      contentSnippet,
+      link
+    } = event;
 
     const datetime = new Date(date);
     const media = event["media:content"][0]["$"].url;
@@ -104,12 +108,12 @@ async function parseURL(calendar) {
     return unique;
   }
   // Remove objects by date range
-  index = results.filter(function(obj) {
+  index = results.filter(function (obj) {
     return obj.date <= nextweek;
   });
 
   // Save the Date: Remove objects by date range
-  reindex = results.filter(function(obj) {
+  reindex = results.filter(function (obj) {
     return obj.date > nextweek;
   });
 
@@ -132,7 +136,9 @@ async function jobsData(jobsAPI) {
 
 // Using MJML to format HTML Email
 function formatHTML(events, jobs, calendar) {
-  const { html } = mjml(
+  const {
+    html
+  } = mjml(
     `
   <mjml>
     <mj-body width="700px">
@@ -214,15 +220,15 @@ function formatHTML(events, jobs, calendar) {
     <mj-section>
       <mj-column width="600px" background-color="#FFF">
       ${jobs.map(
-        item => `
+        job => `
         <mj-text font-size="15px" font-weight="600" color="#000" align="center">
-          <a href="${item.link}">${item.title.rendered}</a>
+          <a href="${job.link}">${job.title.rendered}</a>
         </mj-text>
         <mj-text font-size="14px" color="#000">
-          ${item.content.rendered}
+          ${job.content.rendered}
         </mj-text>
         <mj-text>
-          <a href="${item.link}">Learn More...</a>
+          <a href="${job.link}">Learn More...</a>
         </mj-text>
           <mj-spacer height="2px" />
         <mj-divider border-color="#F8C93E"></mj-divider>
@@ -251,8 +257,7 @@ function formatHTML(events, jobs, calendar) {
 
     </mj-body>
   </mjml>
-`,
-    {
+`, {
       beautify: true
     }
   );
@@ -262,19 +267,19 @@ function formatHTML(events, jobs, calendar) {
 
 async function mail(html) {
   //Local Server
-  // const transporter = nodemailer.createTransport({
-  //   host: "smtp.cs.fiu.edu",
-  //   port: 25,
-  // });
+  const transporter = nodemailer.createTransport({
+    host: "smtp.cs.fiu.edu",
+    port: 25,
+  });
 
   // Gmail Version
-  const transporter = nodemailer.createTransport({
-    service: "gmail",
-    auth: {
-      user: email,
-      pass: password
-    }
-  });
+  // const transporter = nodemailer.createTransport({
+  //   service: "gmail",
+  //   auth: {
+  //     user: email,
+  //     pass: password
+  //   }
+  // });
 
   await transporter.sendMail({
     from: email,
@@ -283,7 +288,7 @@ async function mail(html) {
     html
   });
 
-  transporter.verify(function(error, success) {
+  transporter.verify(function (error, success) {
     if (error) {
       console.log(error);
     } else {
