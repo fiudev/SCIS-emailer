@@ -1,0 +1,153 @@
+
+body {
+    width: 800px;
+    margin: 0 auto;
+    font-family: 'Open Sans', sans-serif;
+  }
+  .container {
+    width: 600px;
+    margin: 0 auto;
+    position: sticky;
+    left: 200px;
+    
+  }
+  fieldset {
+    -webkit-margin-start: 0px;
+    -webkit-margin-end: 0px;
+    -webkit-padding-before: 0em;
+    -webkit-padding-start: 0em;
+    -webkit-padding-end: 0em;
+    -webkit-padding-after: 0em;
+    border: 0px;
+    border-image-source: initial;
+    border-image-slice: initial;
+    border-image-width: initial;
+    border-image-outset: initial;
+    border-image-repeat: initial;
+    min-width: -webkit-min-content;
+    padding: 30px;
+  }
+
+  .left {
+    float: left;
+  }
+  
+  .clear {
+    clear: both;
+  }
+  .ghost-input, p {
+    font-weight:200;
+    font-size: small;
+    width: 300px;
+    border:10px;
+    outline: none;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    color: #4b545f;
+    background: #fff;
+    font-family: Open Sans,Verdana;
+    padding: 10px 15px;
+    margin: 30px 0px;
+
+  }
+  .ghost-input:focus {
+    border-bottom:1px solid #ddd;
+  }
+  .ghost-button {
+    background-color: transparent;
+    border:2px solid #ddd;
+    padding:10px 30px;
+    width: 100%;
+    min-width: 350px;
+    -webkit-transition: all 0.1s ease-in-out;
+    -moz-transition: all 0.1s ease-in-out;
+    -ms-transition: all 0.1s ease-in-out;
+    -o-transition: all 0.1s ease-in-out;
+    transition: all 0.1s ease-in-out;
+  }
+
+  .logoutLblPos{
+    background-color: transparent;
+    border:2px solid #ddd;
+    position:fixed;
+    right:10px;
+    top:5px;
+    padding:5px 10px;
+    -webkit-transition: all 0.1s ease-in-out;
+    -moz-transition: all 0.1s ease-in-out;
+    -ms-transition: all 0.1s ease-in-out;
+    -o-transition: all 0.1s ease-in-out;
+    transition: all 0.1s ease-in-out;
+  }
+
+
+  .ghost-button:hover {
+    border:2px solid #515151;
+  }
+  p {
+    color: #E64A19;
+  }
+  /* The side navigation menu */
+.sidebar {
+  margin: -10;
+  padding: 0;
+  width: 150px;
+  background-color: #f1f1f1;
+  position: fixed;
+  height: 100%;
+  overflow: auto;
+  z-index: 1;
+  left: 0;
+}
+
+/* Sidebar links */
+.sidebar a {
+  display: block;
+  color: black;
+  padding: 16px;
+  text-decoration: none;
+}
+
+/* Active/current link */
+.sidebar a.active {
+  background-color: #081E3F;
+  color: white;
+}
+
+/* Links on mouse-over */
+.sidebar a:hover:not(.active) {
+  background-color: #555;
+  color: white;
+}
+
+/* Page content. The value of the margin-left property should match the value of the sidebar's width property */
+div.content {
+  margin-left: 200px;
+  padding: 1px 16px;
+  height: 1000px;
+}
+
+/* On screens that are less than 700px wide, make the sidebar into a topbar */
+@media screen and (max-width: 700px) {
+  .sidebar {
+    width: 100%;
+    height: auto;
+    position: relative;
+  }
+  .sidebar a {float: left;}
+  div.content {margin-left: 0;}
+}
+
+/* On screens that are less than 400px, display the bar vertically, instead of horizontally */
+@media screen and (max-width: 400px) {
+  .sidebar a {
+    text-align: center;
+    float: none;
+  }
+}
+
+.labelText {
+  font-size: medium;
+  font-weight: bold;
+}
