@@ -3,15 +3,19 @@ const Parser = require("rss-parser");
 const mjml = require("mjml");
 const nodemailer = require("nodemailer");
 const moment = require("moment");
-const cron = require('node-cron');
-const express = require('express');
+
+const express = require("express");
 const app = express();
-app.use(express.static('public'));
-const bodyParser = require('body-parser');
-app.use(bodyParser.urlencoded({ extended: false }));
-app.set('view engine', 'ejs');
 const fetch = require("node-fetch");
 
+app.use(express.static("public"));
+const bodyParser = require("body-parser");
+app.use(
+  bodyParser.urlencoded({
+    extended: false
+  })
+);
+app.set("view engine", "ejs");
 
 const email = process.env.MAIL_EMAIL;
 const password = process.env.MAIL_PASSWORD;
@@ -37,15 +41,18 @@ let SCIS = {
   eventWeek: 14,
   saveDate: 30,
   title: "School of Computing and Information Sciences",
-  cover: "https://www.cis.fiu.edu/wp-content/uploads/2019/10/scis-newsletter-cover-10242019.png",
+  cover:
+    "https://www.cis.fiu.edu/wp-content/uploads/2019/10/scis-newsletter-cover-10242019.png",
   link: "https://www.cis.fiu.edu/events",
-  calendar_url: "https://calendar.fiu.edu/department/computing_information_sciences/calendar/xml",
+  calendar_url:
+    "https://calendar.fiu.edu/department/computing_information_sciences/calendar/xml",
   date: moment().format("dddd, MMMM Do YYYY")
 };
 
 const CEC = {
   title: "College of Engineering",
-  cover: "https://www.cis.fiu.edu/wp-content/uploads/2019/07/1-update-CEC-Email-Newsletter-header-min.jpg",
+  cover:
+    "https://www.cis.fiu.edu/wp-content/uploads/2019/07/1-update-CEC-Email-Newsletter-header-min.jpg",
   link: "https://cec.fiu.edu/",
   calendar_url: "https://calendar.fiu.edu/department/cec/calendar/xml"
 };
@@ -66,9 +73,7 @@ const calendar = SCIS;
 
 async function parseURL(calendar) {
   const feed = await parser.parseURL(calendar.calendar_url);
-  const {
-    items: events
-  } = feed;
+  const { items: events } = feed;
 
   const date = new Date();
   const today = date.getDate();
@@ -79,12 +84,7 @@ async function parseURL(calendar) {
   );
 
   const promises = events.map(async event => {
-    const {
-      date,
-      title,
-      contentSnippet,
-      link
-    } = event;
+    const { date, title, contentSnippet, link } = event;
 
     const datetime = new Date(date);
     const media = event["media:content"][0]["$"].url;
@@ -120,12 +120,12 @@ async function parseURL(calendar) {
     return unique;
   }
   // Remove objects by date range
-  index = results.filter(function (obj) {
+  index = results.filter(function(obj) {
     return obj.date <= nextweek;
   });
 
   // Save the Date: Remove objects by date range
-  reindex = results.filter(function (obj) {
+  reindex = results.filter(function(obj) {
     return obj.date > nextweek;
   });
 
@@ -148,9 +148,7 @@ async function jobsData(jobsAPI) {
 
 // Using MJML to format HTML Email
 function formatHTML(events, jobs, calendar) {
-  const {
-    html
-  } = mjml(
+  const { html } = mjml(
     `
   <mjml>
     <mj-body width="700px">
@@ -270,7 +268,8 @@ function formatHTML(events, jobs, calendar) {
 
     </mj-body>
   </mjml>
-`, {
+`,
+    {
       beautify: true
     }
   );
@@ -282,7 +281,7 @@ async function mail(html) {
   //Local Server
   const transporter = nodemailer.createTransport({
     host: "smtp.cs.fiu.edu",
-    port: 25,
+    port: 25
   });
 
   // Gmail Version
@@ -301,7 +300,7 @@ async function mail(html) {
     html
   });
 
-  transporter.verify(function (error, success) {
+  transporter.verify(function(error, success) {
     if (error) {
       console.log(error);
     } else {
@@ -314,71 +313,67 @@ async function main() {
   const events = await parseURL(calendar).catch(console.error);
   const jobs = await jobsData(jobsAPI).catch(console.error);
 
-// Dashboard Begins
+  // Dashboard Begins
   /* Getting initial landing page*/
-  app.get('/', function (req, res) {
-    res.render('index')
+  app.get("/", function(req, res) {
+    res.render("index");
+  });
+  app.post("/logout", function(req, res) {
+    res.redirect("/");
+  });
 
-  })
-  app.post('/logout', function(req, res) {
-    res.redirect('/')
-  })
-
-/* Getting Admin page */
-  app.get('/mainpage', function (req, res) {
-    res.render('mainpage',
-    {
-      emailTo: SCIS.emailTo, 
-      emailFrom: SCIS.emailFrom, 
+  /* Getting Admin page */
+  app.get("/mainpage", function(req, res) {
+    res.render("mainpage", {
+      emailTo: SCIS.emailTo,
+      emailFrom: SCIS.emailFrom,
       title: SCIS.title,
       link: SCIS.link,
       calendar_url: SCIS.calendar_url,
       cover: SCIS.cover,
       eventWeek: SCIS.eventWeek,
       saveTheDate: SCIS.saveDate
-      })
-  })
+    });
+  });
 
   /* Getting Admin page */
-  app.get('/specialevents', function (req, res) {
-    res.render('specialevents')
-  })
+  app.get("/specialevents", function(req, res) {
+    res.render("specialevents");
+  });
 
   /**Controls change for Calander */
-  app.post('/submitChanges', function (req,res) {
+  app.post("/submitChanges", function(req, res) {
     for (let prop in req.body) {
-      if (req.body[prop] != '') {
-        if (prop === 'eventWeek' || prop === 'saveDate') {
-          SCIS[prop] = Number(req.body[prop])
-        }
-        else {
-        SCIS[prop] = req.body[prop]
+      if (req.body[prop] != "") {
+        if (prop === "eventWeek" || prop === "saveDate") {
+          SCIS[prop] = Number(req.body[prop]);
+        } else {
+          SCIS[prop] = req.body[prop];
         }
       }
     }
-    res.redirect('/mainpage');
-  })
+    res.redirect("/mainpage");
+  });
 
   /** Controls add special event */
-  app.post('/specialEvent', function (req,res) {
-    console.dir(req.body)
-    res.redirect('/specialevents');
-  })
-  
+  app.post("/specialEvent", function(req, res) {
+    console.dir(req.body);
+    res.redirect("/specialevents");
+  });
+
   /* Redirecting to admin page */
-  app.post('/', function (req, res) {
+  app.post("/", function(req, res) {
     console.log(req.body.email);
     console.log(req.body.password);
     //res.render('index');
-    res.redirect('/mainpage')
-  })
+    res.redirect("/mainpage");
+  });
 
   /* Listening to port */
   app.listen(3000, function() {
-    console.log('Example app listening on port 3000')
-  })
+    console.log("Example app listening on port 3000");
+  });
   // Dashboard End
-
 
   const html = formatHTML(events, jobs, calendar);
   //console.log(html);
