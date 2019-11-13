@@ -215,6 +215,7 @@ function formatHTML(events, jobs, calendar) {
 	  	<mj-text font-size="22px" font-weight="500" color="#fff" align="center">
                 	Career Path
           	</mj-text>
+
     </mj-section>
     
     <mj-section>
@@ -252,7 +253,7 @@ function formatHTML(events, jobs, calendar) {
 
 	<mj-raw>
 	<!-- Google Analytics  -->
-	  <img src="https://www.google-analytics.com/collect?v=1&tid=UA-72593959-1&cid=555&aip=1&t=event&ec=email&ea=open&dp=%2Femail%2Fnewsletter&dt=fiuwsn09192019">
+	  <img src="https://www.google-analytics.com/collect?v=1&tid=UA-72593959-1&cid=555&aip=1&t=event&ec=email&ea=open&dp=%2Femail%2Fnewsletter&dt=fiuwsn10242019">
 	</mj-raw>
 
     </mj-body>
