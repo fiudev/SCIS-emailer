@@ -203,6 +203,77 @@ function formatHTML(events, calendar) {
           	</mj-text>
 	  </mj-section>
 
+		<mj-text font-size="15px" font-weight="600" color="#000" align="center">
+  <a href="https://careerpath.cis.fiu.edu/job/emerge-americas-8-emerge-americas-fellowship/">eMerge Americas Fellowship</a>
+</mj-text>
+<mj-text font-size="14px" color="#000">
+  The eMerge Americas Foundation and John S. and James L. Knight Foundation have partnered to establish a fellowship program that invests in the professional development of top-performing local university computer science engineering students (sophomores, juniors, and seniors) and introduces them to opportunities at top-tier South Florida-based ventures.
+</mj-text>
+<mj-text>
+  <a href="https://careerpath.cis.fiu.edu/job/emerge-americas-8-emerge-americas-fellowship/">Learn More...</a>
+</mj-text>
+  <mj-spacer height="2px" />
+<mj-divider border-color="#F8C93E"></mj-divider>
+
+
+<mj-text font-size="15px" font-weight="600" color="#000" align="center">
+  <a href="https://careerpath.cis.fiu.edu/job/engineering-information-center-ec2805-7-student-assistant-technician/">Student Assistant Technician</a>
+</mj-text>
+<mj-text font-size="14px" color="#000">
+  Student will be providing desktop support over the phone and in person to all students, staff, and faculty of FIU’s Engineering Center. As well as dealing with hardware, software, and troubleshooting computer problems.
+</mj-text>
+<mj-text>
+  <a href="https://careerpath.cis.fiu.edu/job/engineering-information-center-ec2805-7-student-assistant-technician/">Learn More...</a>
+</mj-text>
+  <mj-spacer height="2px" />
+<mj-divider border-color="#F8C93E"></mj-divider>
+
+
+<mj-text font-size="15px" font-weight="600" color="#000" align="center">
+  <a href="https://careerpath.cis.fiu.edu/job/fiu-fiu-engineering-center-7-engineering-info-tech-center-student-assistant-technician/">Engineering Info Tech Center Student Assistant “Technician”</a>
+</mj-text>
+<mj-text font-size="14px" color="#000">
+  Student will be providing desktop support over the phone and in person to all students, staff, and faculty of FIU’s Engineering Center. As well as dealing with hardware, software, and troubleshooting computer problems.
+<br>
+Pay Rate: $10.00/Hr
+</mj-text>
+<mj-text>
+  <a href="https://careerpath.cis.fiu.edu/job/fiu-fiu-engineering-center-7-engineering-info-tech-center-student-assistant-technician/">Learn More...</a>
+</mj-text>
+  <mj-spacer height="2px" />
+<mj-divider border-color="#F8C93E"></mj-divider>
+
+
+<mj-text font-size="15px" font-weight="600" color="#000" align="center">
+  <a href="https://careerpath.cis.fiu.edu/job/design-lighting-consultants-miami-fl-6-website-developer/">Website Developer</a>
+</mj-text>
+<mj-text font-size="14px" color="#000">
+  Design Lighting Consultants would like to offer the opportunity of an internship to develop a new website. While Design Lighting Consultants have had a website for many years now, the company is looking to expand into retail sales and is interested in developing a separate website exclusively for sales. The intern would be working closely with the Premier Lighting Designer, Michael Asmar.
+<br>
+Interested candidates should email a resume to maryjane@designlighting.com with the subject heading FIU internship. After review of the resume(s), interviews will be set up. Please follow this procedure since it is a busy office.
+</mj-text>
+<mj-text>
+  <a href="https://careerpath.cis.fiu.edu/job/design-lighting-consultants-miami-fl-6-website-developer/">Learn More...</a>
+</mj-text>
+  <mj-spacer height="2px" />
+<mj-divider border-color="#F8C93E"></mj-divider>
+
+
+<mj-text font-size="15px" font-weight="600" color="#000" align="center">
+  <a href="https://careerpath.cis.fiu.edu/job/facebook-menlo-park-ca-or-seattle-wa-6-facebook-university-software-engineering-summer-2020/">Facebook University, Software Engineering – Summer 2020</a>
+</mj-text>
+<mj-text font-size="14px" color="#000">
+  We believe that anyone, anywhere can make a positive impact by developing products to bring the world closer together. Facebook University (FBU) for Engineers is a paid eight-week training program designed to provide mobile development experience to students who are historically under-represented in computer science.
+<br>
+The eight-weeks is broken down by three-weeks of mobile development training in either iOS or Android, followed by five-weeks of hands-on project work on small teams of three. Throughout the duration of the program, you’ll be paired with a Facebook Engineer who will serve as your mentor and guide you along the way.
+</mj-text>
+<mj-text>
+  <a href="https://careerpath.cis.fiu.edu/job/facebook-menlo-park-ca-or-seattle-wa-6-facebook-university-software-engineering-summer-2020/">Learn More...</a>
+</mj-text>
+  <mj-spacer height="2px" />
+<mj-divider border-color="#F8C93E"></mj-divider>
+
+
                 <mj-text font-size="15px" font-weight="600" color="#000" align="center">
                         <a href="https://careerpath.cis.fiu.edu/job/center-for-advancing-education-and-studies-on-critical-infrastructures-resilience-caescir-fiu-mmc-28-caescir-hs-stem-fellow/">CAESCIR HS-STEM Fellow</a>
                 </mj-text>
