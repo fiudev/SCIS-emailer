@@ -20,11 +20,7 @@ app.set("view engine", "ejs");
 const email = process.env.MAIL_EMAIL;
 const password = process.env.MAIL_PASSWORD;
 const jobsAPI = process.env.JOBS_API;
-<<<<<<< HEAD
-const scisAPI = process.env.SCIS_API;
-=======
 const scisAPI = process.env.SCIS_API
->>>>>>> 72c847fbe1fb49c8faa46244929055f9fb6d70b6
 
 const parser = new Parser({
   customFields: {
@@ -155,18 +151,6 @@ async function jobsData(jobsAPI) {
   return data;
 }
 
-<<<<<<< HEAD
-// Get SCIS Rest API
-async function articleData(scisAPI) {
-  let res = await fetch(scisAPI);
-  let data = await res.json();
-  return data;
-}
-
-// Using MJML to format HTML Email
-function formatHTML(events, calendar, articles, jobs) {
-  const { html } = mjml(
-=======
 // GET SCIS REST API
 async function scisData(scisAPI) {
   let res = await fetch(scisAPI);
@@ -179,7 +163,6 @@ function formatHTML(events, jobs, calendar, posts) {
   const {
     html
   } = mjml(
->>>>>>> 72c847fbe1fb49c8faa46244929055f9fb6d70b6
     `
   <mjml>
     <mj-body width="700px">
@@ -267,8 +250,6 @@ function formatHTML(events, jobs, calendar, posts) {
               `
             )}
 
-
-	
 
             <mj-section background-color="#081D3F">
             <mj-text font-size="22px" font-weight="500" color="#fff" align="center">
@@ -417,12 +398,7 @@ async function mail(html) {
 async function main() {
   const events = await parseURL(calendar).catch(console.error);
   const jobs = await jobsData(jobsAPI).catch(console.error);
-<<<<<<< HEAD
-  const articles = await articleData(scisAPI).catch(console.error);
-
-=======
   const posts = await scisData(scisAPI).catch(console.error);
->>>>>>> 72c847fbe1fb49c8faa46244929055f9fb6d70b6
 
   // Dashboard Begins
   /* Getting initial landing page*/
@@ -486,11 +462,8 @@ async function main() {
   });
   // Dashboard End
 
-<<<<<<< HEAD
-  const html = formatHTML(events, jobs, articles,  calendar);
-=======
+
   const html = formatHTML(events, jobs, calendar, posts);
->>>>>>> 72c847fbe1fb49c8faa46244929055f9fb6d70b6
   //console.log(html);
 
   await mail(html).catch(console.error);
