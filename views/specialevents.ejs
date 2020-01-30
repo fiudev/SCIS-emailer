@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" content="width=device-width, initial-scale=1">
+        <title>Special Events</title>
+        <link rel="stylesheet" type="text/css" href="/css/style.css">
+    </head>
+    <body>
+        <div class="sidebar" style="top: 0%">
+            <a href="mainpage">Calendar Details</a>
+            <a class="active" href="specialevents">Special Event</a>
+        </div>
+        <h1 style="top: 200px; margin-left: 150px">Special Event</h1>
+        <form align ="right" name="form1" method="POST" action="logout">
+            <label>
+            <input class="logoutLblPos" name="submit2" type="submit" id="submit2" value="log out">
+            </label>
+          </form>
+        <div class= "container">
+            <fieldset>
+                <form method="POST">
+                        <div class="left">
+                                <label for = "date" class="labelText" >Date:</label>
+                                <input name="date" type="date" class="ghost-input">
+                            </div>
+                            <div class="left">
+                                <label for = "title" class="labelText" >Event Title:</label>
+                                <input name="title" type="text" class="ghost-input" placeholder='Event Title'>
+                            </div>
+                            <div class="left">
+                                <label for = "link" class="labelText" >Link:</label>
+                                <input name="link" type="url" class="ghost-input" placeholder="Link">
+                            </div>
+                    <button type="submit" class="ghost-button" formaction="/specialEvent">Submit</button>
+
+                    
+
+                </form>
+            </fieldset>
+        </div>
+    </body>
+</html>

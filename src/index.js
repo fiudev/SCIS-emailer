@@ -1,32 +1,59 @@
-const dotENV = require('dotenv').config();
+const dotENV = require("dotenv").config();
 const Parser = require("rss-parser");
 const mjml = require("mjml");
 const nodemailer = require("nodemailer");
 const moment = require("moment");
 
+const express = require("express");
+const app = express();
+const fetch = require("node-fetch");
+
+app.use(express.static("public"));
+const bodyParser = require("body-parser");
+app.use(
+  bodyParser.urlencoded({
+    extended: false
+  })
+);
+app.set("view engine", "ejs");
+
 const email = process.env.MAIL_EMAIL;
 const password = process.env.MAIL_PASSWORD;
+const jobsAPI = process.env.JOBS_API;
+const scisAPI = process.env.SCIS_API;
 
 const parser = new Parser({
   customFields: {
     item: [
-      ["media:content", "media:content", {
-        keepArray: true
-      }]
+      [
+        "media:content",
+        "media:content",
+        {
+          keepArray: true
+        }
+      ]
     ]
   }
 });
 
-const SCIS = {
+let SCIS = {
+  emailTo: "test@fiu.edu",
+  emailFrom: "test@fiu.edu",
+  eventWeek: 14,
+  saveDate: 30,
   title: "School of Computing and Information Sciences",
-  cover: "https://www.cis.fiu.edu/wp-content/uploads/2019/10/scis-newsletter-cover-10242019.png",
+  cover:
+    "https://www.cis.fiu.edu/wp-content/uploads/2019/10/scis-newsletter-cover-10242019.png",
   link: "https://www.cis.fiu.edu/events",
-  calendar_url: "https://calendar.fiu.edu/department/computing_information_sciences/calendar/xml",
-  date: moment().format('dddd, MMMM Do YYYY')
+  calendar_url:
+    "https://calendar.fiu.edu/department/computing_information_sciences/calendar/xml",
+  date: moment().format("dddd, MMMM Do YYYY")
 };
+
 const CEC = {
   title: "College of Engineering",
-  cover: "https://www.cis.fiu.edu/wp-content/uploads/2019/07/1-update-CEC-Email-Newsletter-header-min.jpg",
+  cover:
+    "https://www.cis.fiu.edu/wp-content/uploads/2019/07/1-update-CEC-Email-Newsletter-header-min.jpg",
   link: "https://cec.fiu.edu/",
   calendar_url: "https://calendar.fiu.edu/department/cec/calendar/xml"
 };
@@ -47,9 +74,7 @@ const calendar = SCIS;
 
 async function parseURL(calendar) {
   const feed = await parser.parseURL(calendar.calendar_url);
-  const {
-    items: events
-  } = feed;
+  const { items: events } = feed;
 
   const date = new Date();
   const today = date.getDate();
@@ -60,12 +85,8 @@ async function parseURL(calendar) {
   );
 
   const promises = events.map(async event => {
-    const {
-      date,
-      title,
-      contentSnippet,
-      link
-    } = event;
+    const { date, title, contentSnippet, link } = event;
+
     const datetime = new Date(date);
     const media = event["media:content"][0]["$"].url;
 
@@ -94,50 +115,65 @@ async function parseURL(calendar) {
       // store the keys of the unique objects
       .map((e, i, final) => final.indexOf(e) === i && i)
       // eliminate the dead keys & store unique objects
-      .filter(e => results[e]).map(e => results[e]);
+      .filter(e => results[e])
+      .map(e => results[e]);
 
     return unique;
   }
   // Remove objects by date range
-  index = results.filter(function (obj) {
+  index = results.filter(function(obj) {
     return obj.date <= nextweek;
   });
 
   // Save the Date: Remove objects by date range
-  reindex = results.filter(function (obj) {
+  reindex = results.filter(function(obj) {
     return obj.date > nextweek;
   });
 
-  // console.log("2week date: " + nextweek);
-  //console.log("Index: " + index);
-  // console.log("Save the Date results: " + reindex);
+  //Console log the run date
+  console.log("2week date: " + nextweek);
 
-  //console.log(getUnique(results, 'link'));
-  //return getUnique(index, 'link')
+  // Return First Set of Events Before and all the rest after
   return {
-    before: getUnique(index, 'link'),
-    after: getUnique(reindex, 'link')
-  }
+    before: getUnique(index, "link"),
+    after: getUnique(reindex, "link")
+  };
+}
+
+// GET Career Path REST API
+async function jobsData(jobsAPI) {
+  let res = await fetch(jobsAPI);
+  let data = await res.json();
+  return data;
+}
+
+// Get SCIS Rest API
+async function articleData(scisAPI) {
+  let res = await fetch(scisAPI);
+  let data = await res.json();
+  return data;
 }
 
 // Using MJML to format HTML Email
-function formatHTML(events, calendar) {
-  const {
-    html
-  } = mjml(
+function formatHTML(events, calendar, articles, jobs) {
+  const { html } = mjml(
     `
   <mjml>
     <mj-body width="700px">
        
-        <mj-section>
+        <mj-section padding="0px" margin="0px" >
           <mj-column width="100%">
-            <mj-image src=${calendar.cover} alt="header image" fluid-on-mobile="true" padding="0px"></mj-image>
+            <mj-image src=${
+              calendar.cover
+            } alt="header image" fluid-on-mobile="true" padding="0px"></mj-image>
           </mj-column>
         </mj-section>
 
         <mj-section background-color='#fff'>
 	  <mj-column>
-	    <mj-text align="center" font-size="21px" font-weight="500" color="#030303" padding="0 15px">${calendar.date}</mj-text>
+	    <mj-text align="center" font-size="21px" font-weight="500" color="#030303" padding="0 15px">${
+        calendar.date
+      }</mj-text>
 	  </mj-column>
         </mj-section>
 
@@ -146,15 +182,13 @@ function formatHTML(events, calendar) {
             
             ${events.before.map(
               event =>
-              `
+                `
               <mj-section>
                 <mj-raw>
                   <!-- Left image -->
                 </mj-raw>
                 <mj-column align="center">
-                  <mj-image width="200px" src=${
-                    event.media
-                  } align="center" fluid-on-mobile="true"></mj-image>
+                  <mj-image width="200px" src=${event.media} align="center" fluid-on-mobile="true"></mj-image>
                 </mj-column>
                 <mj-raw>
                   <!-- right paragraph -->
@@ -163,9 +197,7 @@ function formatHTML(events, calendar) {
                   <mj-text font-size="20px" font-weight="500" font-family="Helvetica Neue" color="#081D3F">
                     ${event.title}
                   </mj-text>
-                  <mj-text font-family="Helvetica Neue" color="#626262" font-size="14px" >${
-                    event.snippet
-                  }...</mj-text>
+                  <mj-text font-family="Helvetica Neue" color="#626262" font-size="14px" >${event.snippet}...</mj-text>
                   <mj-text color="#081D3F"><a href=${event.link}>
                   Read more..</a></mj-text>
               <mj-spacer height="0px" />
@@ -173,7 +205,47 @@ function formatHTML(events, calendar) {
               </mj-section>
               <mj-divider border-color="#081E3F" border-style="solid" border-width="1px" padding-left="100px" padding-right="100px" padding-bottom="5px" padding-top="5px"></mj-divider>
               `
-              )}
+            )}
+		
+	    <mj-section background-color="#081D3F">
+            <mj-text font-size="22px" font-weight="500" color="#fff" align="center">
+                  News Highlights
+              </mj-text>
+            </mj-section>
+
+
+        <mj-section background-color="#fafafa">
+          <mj-column width="600px" background-color="#FFF">
+
+            ${articles.map(
+              article =>
+                `
+              <mj-section>
+                <mj-raw>
+                  <!-- Left image -->
+                </mj-raw>
+                <mj-column align="center">
+                  <mj-image width="200px" src=${article.featured_image_urls.medium} align="center" fluid-on-mobile="true"></mj-image>
+                </mj-column>
+                <mj-raw>
+                  <!-- right paragraph -->
+                </mj-raw>
+                <mj-column>
+                  <mj-text font-size="20px" font-weight="500" font-family="Helvetica Neue" color="#081D3F">
+                    ${article.title.rendered}
+                  </mj-text>
+                  <mj-text font-family="Helvetica Neue" color="#626262" font-size="14px" >${article.excerpt.rendered}...</mj-text>
+                  <mj-text color="#081D3F"><a href=${article.link}>
+                  Read more..</a></mj-text>
+              <mj-spacer height="0px" />
+                </mj-column>
+              </mj-section>
+              <mj-divider border-color="#081E3F" border-style="solid" border-width="1px" padding-left="100px" padding-right="100px" padding-bottom="5px" padding-top="5px"></mj-divider>
+              `
+            )}
+
+
+	
 
             <mj-section background-color="#081D3F">
             <mj-text font-size="22px" font-weight="500" color="#fff" align="center">
@@ -181,16 +253,16 @@ function formatHTML(events, calendar) {
               </mj-text>
             </mj-section>
  
-	    <mj-raw>
+	          <mj-raw>
               <ul>
             </mj-raw>
             ${events.after.map(
               event =>
-             `
+                `
              <mj-text align="center" font-size="15px" font-weight="500" font-family="Helvetica Neue" color="#081D3F">
                <li> <a href=${event.link}> ${event.title} </a></li>
              </mj-text>
-	     <mj-spacer height="2px" />  
+	          <mj-spacer height="2px" />  
             `
             )}
 	    <mj-raw>
@@ -198,149 +270,30 @@ function formatHTML(events, calendar) {
 	    </mj-raw> 
 
 	<mj-section background-color="#081D3F">
-	  	<mj-text font-size="22px" font-weight="500" color="#fff" align="center">
-                	Career Path
-          	</mj-text>
-	  </mj-section>
-
-		<mj-text font-size="15px" font-weight="600" color="#000" align="center">
-  <a href="https://careerpath.cis.fiu.edu/job/emerge-americas-8-emerge-americas-fellowship/">eMerge Americas Fellowship</a>
-</mj-text>
-<mj-text font-size="14px" color="#000">
-  The eMerge Americas Foundation and John S. and James L. Knight Foundation have partnered to establish a fellowship program that invests in the professional development of top-performing local university computer science engineering students (sophomores, juniors, and seniors) and introduces them to opportunities at top-tier South Florida-based ventures.
-</mj-text>
-<mj-text>
-  <a href="https://careerpath.cis.fiu.edu/job/emerge-americas-8-emerge-americas-fellowship/">Learn More...</a>
-</mj-text>
-  <mj-spacer height="2px" />
-<mj-divider border-color="#F8C93E"></mj-divider>
-
-
-<mj-text font-size="15px" font-weight="600" color="#000" align="center">
-  <a href="https://careerpath.cis.fiu.edu/job/engineering-information-center-ec2805-7-student-assistant-technician/">Student Assistant Technician</a>
-</mj-text>
-<mj-text font-size="14px" color="#000">
-  Student will be providing desktop support over the phone and in person to all students, staff, and faculty of FIU’s Engineering Center. As well as dealing with hardware, software, and troubleshooting computer problems.
-</mj-text>
-<mj-text>
-  <a href="https://careerpath.cis.fiu.edu/job/engineering-information-center-ec2805-7-student-assistant-technician/">Learn More...</a>
-</mj-text>
-  <mj-spacer height="2px" />
-<mj-divider border-color="#F8C93E"></mj-divider>
-
-
-<mj-text font-size="15px" font-weight="600" color="#000" align="center">
-  <a href="https://careerpath.cis.fiu.edu/job/fiu-fiu-engineering-center-7-engineering-info-tech-center-student-assistant-technician/">Engineering Info Tech Center Student Assistant “Technician”</a>
-</mj-text>
-<mj-text font-size="14px" color="#000">
-  Student will be providing desktop support over the phone and in person to all students, staff, and faculty of FIU’s Engineering Center. As well as dealing with hardware, software, and troubleshooting computer problems.
-<br>
-Pay Rate: $10.00/Hr
-</mj-text>
-<mj-text>
-  <a href="https://careerpath.cis.fiu.edu/job/fiu-fiu-engineering-center-7-engineering-info-tech-center-student-assistant-technician/">Learn More...</a>
-</mj-text>
-  <mj-spacer height="2px" />
-<mj-divider border-color="#F8C93E"></mj-divider>
-
-
-<mj-text font-size="15px" font-weight="600" color="#000" align="center">
-  <a href="https://careerpath.cis.fiu.edu/job/design-lighting-consultants-miami-fl-6-website-developer/">Website Developer</a>
-</mj-text>
-<mj-text font-size="14px" color="#000">
-  Design Lighting Consultants would like to offer the opportunity of an internship to develop a new website. While Design Lighting Consultants have had a website for many years now, the company is looking to expand into retail sales and is interested in developing a separate website exclusively for sales. The intern would be working closely with the Premier Lighting Designer, Michael Asmar.
-<br>
-Interested candidates should email a resume to maryjane@designlighting.com with the subject heading FIU internship. After review of the resume(s), interviews will be set up. Please follow this procedure since it is a busy office.
-</mj-text>
-<mj-text>
-  <a href="https://careerpath.cis.fiu.edu/job/design-lighting-consultants-miami-fl-6-website-developer/">Learn More...</a>
-</mj-text>
-  <mj-spacer height="2px" />
-<mj-divider border-color="#F8C93E"></mj-divider>
-
-
-<mj-text font-size="15px" font-weight="600" color="#000" align="center">
-  <a href="https://careerpath.cis.fiu.edu/job/facebook-menlo-park-ca-or-seattle-wa-6-facebook-university-software-engineering-summer-2020/">Facebook University, Software Engineering – Summer 2020</a>
-</mj-text>
-<mj-text font-size="14px" color="#000">
-  We believe that anyone, anywhere can make a positive impact by developing products to bring the world closer together. Facebook University (FBU) for Engineers is a paid eight-week training program designed to provide mobile development experience to students who are historically under-represented in computer science.
-<br>
-The eight-weeks is broken down by three-weeks of mobile development training in either iOS or Android, followed by five-weeks of hands-on project work on small teams of three. Throughout the duration of the program, you’ll be paired with a Facebook Engineer who will serve as your mentor and guide you along the way.
-</mj-text>
-<mj-text>
-  <a href="https://careerpath.cis.fiu.edu/job/facebook-menlo-park-ca-or-seattle-wa-6-facebook-university-software-engineering-summer-2020/">Learn More...</a>
-</mj-text>
-  <mj-spacer height="2px" />
-<mj-divider border-color="#F8C93E"></mj-divider>
-
-
-                <mj-text font-size="15px" font-weight="600" color="#000" align="center">
-                        <a href="https://careerpath.cis.fiu.edu/job/center-for-advancing-education-and-studies-on-critical-infrastructures-resilience-caescir-fiu-mmc-28-caescir-hs-stem-fellow/">CAESCIR HS-STEM Fellow</a>
-                </mj-text>
-                <mj-text font-size="14px" color="#000">
-                    Florida International University’s Center for Advancing Education and Studies on Critical Infrastructures Resilience (CAESCIR) is funded by a Scientific Leadership Award granted by the United States Department of Homeland Security. CAESCIR aims to improve our nation’s critical infrastructures security and resilience via an integrated research and education framework that covers Homeland Security Science, Technology, Engineering, and Mathematics (HS- STEM) areas of interest in computer science, information technology, and cybersecurity.
-                </mj-text>
-                <mj-text>
-                        <a href="https://careerpath.cis.fiu.edu/job/center-for-advancing-education-and-studies-on-critical-infrastructures-resilience-caescir-fiu-mmc-28-caescir-hs-stem-fellow/">Learn More...</a>
-                </mj-text>
-                        <mj-spacer height="2px" />
-                <mj-divider border-color="#F8C93E"></mj-divider>
-
-                <mj-text font-size="15px" font-weight="600" color="#000" align="center">
-                        <a href="https://careerpath.cis.fiu.edu/job/amepower-solutions-in-power-electronics-doral-florida-6-entry-level-computer-science-mobile-app-developer-co-op-fall2019-spring-2020/">Entry Level – Computer Science – Mobile App Developer CO-OP (Fall2019/Spring 2020)</a>
-                </mj-text>
-                <mj-text font-size="14px" color="#000">
-                    AmePower CO-OP program cultivates technical problem-solving skills by developing different engineering projects driven by real AmePower business priorities. Experience and training combined with mentoring and guidance from assignment managers, prepare members with the technical skills and values needed to achieve a successful entry-level engineering career. Participants will have the opportunity to interact with different departments to learn towards engineering and other real-world closely related roles such as; Design, Quality, Production, Reliability, Customer Support, among other areas.
-                </mj-text>
-                <mj-text>
-                        <a href="https://careerpath.cis.fiu.edu/job/amepower-solutions-in-power-electronics-doral-florida-6-entry-level-computer-science-mobile-app-developer-co-op-fall2019-spring-2020/">Learn More...</a>
-                </mj-text>
-                        <mj-spacer height="2px" />
-                <mj-divider border-color="#F8C93E"></mj-divider>
-
-                <mj-text font-size="15px" font-weight="600" color="#000" align="center">
-                        <a href="https://careerpath.cis.fiu.edu/job/lc-neighborhood-it-miami-fl-5-computer-consultant/">Computer Consultant</a>
-                </mj-text>
-                <mj-text font-size="14px" color="#000">
-                    LcNeighborhood-IT was founded with the intent of adding those with the need of computer repair services. Neighborhood-IT was founded in 2005 by  Mr. Leslie Calvo.
-
-                    LcNeighborhood-IT has now grown to expand the service not only to the computer repair but as well to Data Recovery & Management, Implementation of private & public networks, Server installation & Web Design.
-                </mj-text>
-                <mj-text>
-                        <a href="https://careerpath.cis.fiu.edu/job/lc-neighborhood-it-miami-fl-5-computer-consultant/">Learn More...</a>
-                </mj-text>
-                        <mj-spacer height="2px" />
-                <mj-divider border-color="#F8C93E"></mj-divider>
-
-                <mj-text font-size="15px" font-weight="600" color="#000" align="center">
-                        <a href="https://careerpath.cis.fiu.edu/job/sharp-marketing-work-from-home-5-part-time-web-app-developer/">Part Time Web App Developer</a>
-                </mj-text>
-                <mj-text font-size="14px" color="#000">
-                  Sharp Marketing is seeking a skilled Web Developer who will be responsible for the creation of a Software-as-a-Service (SAAS) solution that will be used for companies in our industry. The software is meant for a B2B audience and is related to the collection and management of tax certificates.
-
-                  To succeed in this role, you will need to be proficient in HTML 5, CSS, WordPress, Database Management and have solid knowledge in programming applications. You will also need to be able to meet strict milestone deliverables that will be mutually agreed upon the beginning of the project.
-                </mj-text>
-                <mj-text>
-                        <a href="https://careerpath.cis.fiu.edu/job/sharp-marketing-work-from-home-5-part-time-web-app-developer/">Learn More...</a>
-                </mj-text>
-			<mj-spacer height="2px" />
-                <mj-divider border-color="#F8C93E"></mj-divider>
-
-             
-               <mj-text font-size="15px" font-weight="600" color="#000" align="center">
-                  <a href="https://careerpath.cis.fiu.edu/job/american-express-company-phoenix-az-ft-lauderdale-fl-and-new-york-ny-6-campus-undergraduate-2020-technology-software-engineering-internship/">Campus Undergraduate – 2020 Technology Software Engineering Internship</a>
-                </mj-text>
-                <mj-text font-size="14px" color="#000">
-                        Join our 10 week paid summer internship program where you will have opportunities for development, networking and also engage with our Executives. A summer internship at American Express will give you the chance to influence and strengthen the core businesses across the organization.
-
-                        Interns are a member of a product engineering or delivery and integration team. We will place you on a scrum team where you will collaborate with colleagues and our business partners. So if you are dedicated to the newest technology and motivating others, start your career here.
-                </mj-text>
-                <mj-text>
-                <mj-text>
-                    <a href="https://careerpath.cis.fiu.edu/job/american-express-company-phoenix-az-ft-lauderdale-fl-and-new-york-ny-6-campus-undergraduate-2020-technology-software-engineering-internship/">Learn More...</a>
-                </mj-text>  
-
-         </mj-section>
+	  <mj-text font-size="22px" font-weight="500" color="#fff" align="center">
+                Career Path
+          </mj-text>
+	</mj-section>
+    
+    <mj-section>
+      <mj-column width="600px" background-color="#FFF">
+      ${jobs.map(
+        job => `
+        <mj-text font-size="15px" font-weight="600" color="#000" align="center">
+          <a href="${job.link}">${job.title.rendered}</a>
+        </mj-text>
+        <mj-text font-size="14px" color="#000">
+          ${job.content.rendered}
+        </mj-text>
+        <mj-text>
+          <a href="${job.link}">Learn More...</a>
+        </mj-text>
+          <mj-spacer height="2px" />
+        <mj-divider border-color="#F8C93E"></mj-divider>
+        `
+      )}
+      </mj-column>
+    </mj-section>
 
            <mj-section background-color="#fff">
               <mj-text align="center" font-size="15px" font-weight="300" font-family="Helvetica Neue" color="#000">
@@ -362,7 +315,8 @@ The eight-weeks is broken down by three-weeks of mobile development training in 
 
     </mj-body>
   </mjml>
-`, {
+`,
+    {
       beautify: true
     }
   );
@@ -371,10 +325,20 @@ The eight-weeks is broken down by three-weeks of mobile development training in 
 }
 
 async function mail(html) {
+  //Local Server
   const transporter = nodemailer.createTransport({
     host: "smtp.cs.fiu.edu",
-    port: 25,
+    port: 25
   });
+
+  // Gmail Version
+  // const transporter = nodemailer.createTransport({
+  //   service: "gmail",
+  //   auth: {
+  //     user: email,
+  //     pass: password
+  //   }
+  // });
 
   await transporter.sendMail({
     from: email,
@@ -383,7 +347,7 @@ async function mail(html) {
     html
   });
 
-  transporter.verify(function (error, success) {
+  transporter.verify(function(error, success) {
     if (error) {
       console.log(error);
     } else {
@@ -394,8 +358,75 @@ async function mail(html) {
 
 async function main() {
   const events = await parseURL(calendar).catch(console.error);
+  const jobs = await jobsData(jobsAPI).catch(console.error);
+  const articles = await articleData(scisAPI).catch(console.error);
 
-  const html = formatHTML(events, calendar);
+
+  // Dashboard Begins
+  /* Getting initial landing page*/
+  app.get("/", function(req, res) {
+    res.render("index");
+  });
+  app.post("/logout", function(req, res) {
+    res.redirect("/");
+  });
+
+  /* Getting Admin page */
+  app.get("/mainpage", function(req, res) {
+    res.render("mainpage", {
+      emailTo: SCIS.emailTo,
+      emailFrom: SCIS.emailFrom,
+      title: SCIS.title,
+      link: SCIS.link,
+      calendar_url: SCIS.calendar_url,
+      cover: SCIS.cover,
+      eventWeek: SCIS.eventWeek,
+      saveTheDate: SCIS.saveDate
+    });
+  });
+
+  /* Getting Admin page */
+  app.get("/specialevents", function(req, res) {
+    res.render("specialevents");
+  });
+
+  /**Controls change for Calander */
+  app.post("/submitChanges", function(req, res) {
+    for (let prop in req.body) {
+      if (req.body[prop] != "") {
+        if (prop === "eventWeek" || prop === "saveDate") {
+          SCIS[prop] = Number(req.body[prop]);
+        } else {
+          SCIS[prop] = req.body[prop];
+        }
+      }
+    }
+    res.redirect("/mainpage");
+  });
+
+  /** Controls add special event */
+  app.post("/specialEvent", function(req, res) {
+    console.dir(req.body);
+    res.redirect("/specialevents");
+  });
+
+  /* Redirecting to admin page */
+  app.post("/", function(req, res) {
+    console.log(req.body.email);
+    console.log(req.body.password);
+    //res.render('index');
+    res.redirect("/mainpage");
+  });
+
+  /* Listening to port */
+  app.listen(3000, function() {
+    console.log("Example app listening on port 3000");
+  });
+  // Dashboard End
+
+  const html = formatHTML(events, jobs, articles,  calendar);
+  //console.log(html);
+
   await mail(html).catch(console.error);
 }
 

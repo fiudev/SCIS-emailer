@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" content="width=device-width, initial-scale=1">
+        <title>Calendar Details</title>
+        <link rel="stylesheet" type="text/css" href="/css/style.css">
+    </head>
+    <body>
+        
+        <div class="sidebar">
+            <a class="active" href="mainpage">Calendar Details</a>
+            <a href="specialevents">Special Event</a>
+        </div>
+        <form align ="right" name="form1" method="POST" action="logout">
+            <label>
+            <input class="logoutLblPos" name="submit2" type="submit" id="submit2" value="log out">
+            </label>
+          </form>
+        <div class= "container">
+            <fieldset>
+                <form method="POST">
+                    <h1 style="top: 200px">Calendar Details Edit</h1>
+                    <div class="left">
+                        <label for = "emailTo" class="labelText" >Email To:</label>
+                        <input name="emailTo" type="email" class="ghost-input" placeholder= <%= emailTo %> >
+                    </div>
+                    <div class="left">
+                        <label for = "emailFrom" class="labelText" >From Email:</label>
+                        <input name="emailFrom" type="text" class="ghost-input" placeholder=<%= emailFrom %>>
+                    </div>
+                    <div class="left">
+                        <label for = "title" class="labelText" >Calendar Title:</label>
+                        <input name="title" type="text" class="ghost-input" placeholder=<%= title %>>
+                    </div>
+                    <div class="left">
+                        <label for = "link" class="labelText" >Calendar Link:</label>
+                        <input name="link" type="url" class="ghost-input" placeholder=<%= link %>>
+                    </div>
+                    <div class="left">
+                        <label for = "calendar_url" class="labelText" >Calendar URL:</label>
+                        <input name="calendar_url" type="url" class="ghost-input" placeholder=<%= calendar_url %>>
+                    </div>
+                    <div class="left">
+                        <label for = "cover" class="labelText" >Calendar RSS:</label>
+                        <input name= "cover" type="text" class="ghost-input" placeholder=<%= cover %>>
+                    </div>
+                    <div class = "left">
+                        <label for ="eventWeek" class="labelText" >Event Week:</label>
+                        <input name="eventWeek" type="number" class="ghost-input" placeholder=<%= eventWeek %>>
+                    </div>
+                    <div class = "left">
+                        <label for ="saveTheDate" class="labelText" >Save the date:</label>
+                        <input name="saveTheDate" type="number" class="ghost-input" placeholder=<%= saveTheDate %>>
+                    </div>
+                    <button type="submit" class="ghost-button" formaction="/submitChanges">Submit</button>
+                </form>
+            </fieldset>
+        </div>
+    </body>
+</html>
