@@ -20,6 +20,7 @@ app.set("view engine", "ejs");
 const email = process.env.MAIL_EMAIL;
 const password = process.env.MAIL_PASSWORD;
 const jobsAPI = process.env.JOBS_API;
+const scisAPI = process.env.SCIS_API
 
 const parser = new Parser({
   customFields: {
@@ -41,18 +42,15 @@ let SCIS = {
   eventWeek: 14,
   saveDate: 30,
   title: "School of Computing and Information Sciences",
-  cover:
-    "https://www.cis.fiu.edu/wp-content/uploads/2019/10/scis-newsletter-cover-10242019.png",
+  cover: "https://www.cis.fiu.edu/wp-content/uploads/2019/10/scis-newsletter-cover-10242019.png",
   link: "https://www.cis.fiu.edu/events",
-  calendar_url:
-    "https://calendar.fiu.edu/department/computing_information_sciences/calendar/xml",
+  calendar_url: "https://calendar.fiu.edu/department/computing_information_sciences/calendar/xml",
   date: moment().format("dddd, MMMM Do YYYY")
 };
 
 const CEC = {
   title: "College of Engineering",
-  cover:
-    "https://www.cis.fiu.edu/wp-content/uploads/2019/07/1-update-CEC-Email-Newsletter-header-min.jpg",
+  cover: "https://www.cis.fiu.edu/wp-content/uploads/2019/07/1-update-CEC-Email-Newsletter-header-min.jpg",
   link: "https://cec.fiu.edu/",
   calendar_url: "https://calendar.fiu.edu/department/cec/calendar/xml"
 };
@@ -73,7 +71,9 @@ const calendar = SCIS;
 
 async function parseURL(calendar) {
   const feed = await parser.parseURL(calendar.calendar_url);
-  const { items: events } = feed;
+  const {
+    items: events
+  } = feed;
 
   const date = new Date();
   const today = date.getDate();
@@ -84,7 +84,12 @@ async function parseURL(calendar) {
   );
 
   const promises = events.map(async event => {
-    const { date, title, contentSnippet, link } = event;
+    const {
+      date,
+      title,
+      contentSnippet,
+      link
+    } = event;
 
     const datetime = new Date(date);
     const media = event["media:content"][0]["$"].url;
@@ -120,12 +125,12 @@ async function parseURL(calendar) {
     return unique;
   }
   // Remove objects by date range
-  index = results.filter(function(obj) {
+  index = results.filter(function (obj) {
     return obj.date <= nextweek;
   });
 
   // Save the Date: Remove objects by date range
-  reindex = results.filter(function(obj) {
+  reindex = results.filter(function (obj) {
     return obj.date > nextweek;
   });
 
@@ -146,9 +151,18 @@ async function jobsData(jobsAPI) {
   return data;
 }
 
+// GET SCIS REST API
+async function scisData(scisAPI) {
+  let res = await fetch(scisAPI);
+  let post = await res.json();
+  return post;
+}
+
 // Using MJML to format HTML Email
-function formatHTML(events, jobs, calendar) {
-  const { html } = mjml(
+function formatHTML(events, jobs, calendar, posts) {
+  const {
+    html
+  } = mjml(
     `
   <mjml>
     <mj-body width="700px">
@@ -198,6 +212,42 @@ function formatHTML(events, jobs, calendar) {
               <mj-divider border-color="#081E3F" border-style="solid" border-width="1px" padding-left="100px" padding-right="100px" padding-bottom="5px" padding-top="5px"></mj-divider>
               `
             )}
+
+            <mj-section background-color="#081D3F">
+            <mj-text font-size="22px" font-weight="500" color="#fff" align="center">
+                  News Highlights
+              </mj-text>
+            </mj-section>
+
+            <mj-section background-color="#fafafa"> 
+            <mj-column width="600px" background-color="#FFF">
+              
+              ${posts.map(
+                post =>
+                  `
+                <mj-section>
+                  <mj-raw>
+                    <!-- Left image -->
+                  </mj-raw>
+                  <mj-column align="center">
+                    <mj-image width="200px" src=${post.featured_image_urls.medium} align="center" fluid-on-mobile="true"></mj-image>
+                  </mj-column>
+                  <mj-raw>
+                    <!-- right paragraph -->
+                  </mj-raw>
+                  <mj-column>
+                    <mj-text font-size="20px" font-weight="500" font-family="Helvetica Neue" color="#081D3F">
+                      ${post.title.rendered}
+                    </mj-text>
+                    <mj-text font-family="Helvetica Neue" color="#626262" font-size="14px" >${post.excerpt.rendered}...</mj-text>
+                    <mj-text color="#081D3F"><a href=${post.link}>
+                    Read more..</a></mj-text>
+                <mj-spacer height="0px" />
+                  </mj-column>
+                </mj-section>
+                <mj-divider border-color="#081E3F" border-style="solid" border-width="1px" padding-left="100px" padding-right="100px" padding-bottom="5px" padding-top="5px"></mj-divider>
+                `
+              )}
 
             <mj-section background-color="#081D3F">
             <mj-text font-size="22px" font-weight="500" color="#fff" align="center">
@@ -268,8 +318,7 @@ function formatHTML(events, jobs, calendar) {
 
     </mj-body>
   </mjml>
-`,
-    {
+`, {
       beautify: true
     }
   );
@@ -300,7 +349,7 @@ async function mail(html) {
     html
   });
 
-  transporter.verify(function(error, success) {
+  transporter.verify(function (error, success) {
     if (error) {
       console.log(error);
     } else {
@@ -312,18 +361,19 @@ async function mail(html) {
 async function main() {
   const events = await parseURL(calendar).catch(console.error);
   const jobs = await jobsData(jobsAPI).catch(console.error);
+  const posts = await scisData(scisAPI).catch(console.error);
 
   // Dashboard Begins
   /* Getting initial landing page*/
-  app.get("/", function(req, res) {
+  app.get("/", function (req, res) {
     res.render("index");
   });
-  app.post("/logout", function(req, res) {
+  app.post("/logout", function (req, res) {
     res.redirect("/");
   });
 
   /* Getting Admin page */
-  app.get("/mainpage", function(req, res) {
+  app.get("/mainpage", function (req, res) {
     res.render("mainpage", {
       emailTo: SCIS.emailTo,
       emailFrom: SCIS.emailFrom,
@@ -337,12 +387,12 @@ async function main() {
   });
 
   /* Getting Admin page */
-  app.get("/specialevents", function(req, res) {
+  app.get("/specialevents", function (req, res) {
     res.render("specialevents");
   });
 
   /**Controls change for Calander */
-  app.post("/submitChanges", function(req, res) {
+  app.post("/submitChanges", function (req, res) {
     for (let prop in req.body) {
       if (req.body[prop] != "") {
         if (prop === "eventWeek" || prop === "saveDate") {
@@ -356,13 +406,13 @@ async function main() {
   });
 
   /** Controls add special event */
-  app.post("/specialEvent", function(req, res) {
+  app.post("/specialEvent", function (req, res) {
     console.dir(req.body);
     res.redirect("/specialevents");
   });
 
   /* Redirecting to admin page */
-  app.post("/", function(req, res) {
+  app.post("/", function (req, res) {
     console.log(req.body.email);
     console.log(req.body.password);
     //res.render('index');
@@ -370,12 +420,12 @@ async function main() {
   });
 
   /* Listening to port */
-  app.listen(3000, function() {
+  app.listen(3000, function () {
     console.log("Example app listening on port 3000");
   });
   // Dashboard End
 
-  const html = formatHTML(events, jobs, calendar);
+  const html = formatHTML(events, jobs, calendar, posts);
   //console.log(html);
 
   await mail(html).catch(console.error);
