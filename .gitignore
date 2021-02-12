@@ -1,3 +1,5 @@
 node_modules
 .env
 *.log
+scis_event_mailer@1.0.0
+node
