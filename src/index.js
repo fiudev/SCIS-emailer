@@ -31,8 +31,8 @@ const SCIS = {
   emailFrom: 'test@fiu.edu',
   eventWeek: 14,
   saveDate: 30,
-  title: 'School of Computing and Information Sciences',
-  cover: 'https://www.cis.fiu.edu/wp-content/uploads/2019/10/scis-newsletter-cover-10242019.png',
+  title: 'Knight Foundation School of Computing and Information Sciences',
+  cover: 'https://www.cis.fiu.edu/wp-content/uploads/2021/02/CIS-RENAMING-NEWSLETTER-BANNER-1-scaled.jpg',
   link: 'https://www.cis.fiu.edu/events',
   calendar_url: 'https://calendar.fiu.edu/department/computing_information_sciences/calendar/xml',
   date: moment().format('dddd, MMMM Do YYYY')
@@ -329,7 +329,7 @@ function formatHTML(events, jobs, calendar, posts, lectures) {
               <a href="${job.link}">Learn More...</a>
             </mj-text>
               <mj-spacer height="2px" />
-            <mj-divider border-color="#F8C93E"></mj-divider>
+            <mj-divider border-color="#FFCC00"></mj-divider>
             `)}
           </mj-column>
         </mj-section>
@@ -342,7 +342,7 @@ function formatHTML(events, jobs, calendar, posts, lectures) {
             <!-- Copy Right -->
           <mj-section background-color="#fff">f
               <mj-text font-size="12px" font-weight="200" color="#000" align="center">
-                Copyright © 2021, FIU School of Computing and Information Sciences, All rights reserved.
+                Copyright © 2021, FIU Knight Foundation School of Computing and Information Sciences, All rights reserved.
               </mj-text>
           </mj-section>
 
@@ -383,7 +383,7 @@ async function mail(html) {
   await transporter.sendMail({
     from: email,
     to: process.env.TO_EMAIL,
-    subject: 'FIU SCIS Events Newsletter',
+    subject: 'KFSCIS Weekly Wrap-up',
     html
   });
 
