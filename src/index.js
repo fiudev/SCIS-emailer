@@ -177,35 +177,7 @@ function formatHTML(events, jobs, calendar, posts, lectures) {
 
 
 
-        <mj-section background-color="#081D3F">
-            <mj-text font-size="22px" font-weight="500" color="#fff" align="center">
-                  News Highlights
-              </mj-text>
-            </mj-section>
-            <mj-section background-color="#fafafa">
-            <mj-column width="600px" background-color="#FFF">
 
-              ${posts.map(post => `
-                <mj-section>
-                  <mj-raw>
-                    <!-- Left image -->
-                  </mj-raw>
-                  <mj-column align="center">
-                    <mj-image width="400px" src=${post.featured_image_urls.medium} align="center" fluid-on-mobile="true"></mj-image>
-                  </mj-column>
-                  <mj-raw>
-                    <!-- right paragraph -->
-                  </mj-raw>
-                  <mj-column>
-                    <mj-text font-size="20px" font-weight="500" font-family="Helvetica Neue" color="#081D3F">
-                      ${post.title.rendered}
-                    </mj-text>
-                    <mj-text font-family="Helvetica Neue" color="#626262" font-size="14px" >${post.excerpt.rendered} </mj-text>
-                <mj-spacer height="0px" />
-                  </mj-column>
-                </mj-section>
-                <mj-divider border-color="#081E3F" border-style="solid" border-width="1px" padding-left="100px" padding-right="100px" padding-bottom="5px" padding-top="5px"></mj-divider>
-                `)}
 
 
 
@@ -258,56 +230,6 @@ function formatHTML(events, jobs, calendar, posts, lectures) {
           </ul>
         </mj-raw>
 
-        <mj-raw>
-          <!-- Start Lecture  -->
-          <!-- Place after mjraw ending ul tag and before careerpath header in index.js-->
-        </mj-raw>
-        <mj-section background-color="#081D3F">
-            <mj-text font-size="22px" font-weight="500" color="#fff" align="center">
-                  Upcoming Lectures
-              </mj-text>
-        </mj-section>
-
-      <mj-column width="600px" background-color="#FFF">
-
-         ${lectures.map(lecture => `
-        <mj-section>
-          <mj-raw>
-            <!-- Left image -->
-          </mj-raw>
-          <mj-column align="center">
-            <mj-image width="400px" src="${lecture.featured_image_urls.medium}" align="center" fluid-on-mobile="true"></mj-image>
-          </mj-column>
-          <mj-raw>
-            <!-- right paragraph -->
-          </mj-raw>
-          <mj-column>
-          <mj-text font-size="20px" font-weight="500" font-family="Helvetica Neue" color="#081D3F">
-            ${lecture.acf.ls_speaker_name}
-          </mj-text>
-          <mj-text font-size="14px" font-weight="500" font-family="Helvetica Neue" color="#081D3F">
-            ${lecture.acf.ls_lecture_start_time}
-          </mj-text>
-          <mj-text font-family="Helvetica Neue" color="#081D3F" font-size="16px" >
-          ${lecture.title.rendered}
-          </mj-text>
-          <mj-text font-size="14px" font-weight="500" font-family="Helvetica Neue" color="#081D3F">
-          ${lecture.post_excerpt_stackable}
-          </mj-text>
-          <mj-text color="#081D3F">
-            <a href="${lecture.link}">
-            Read more..
-            </a>
-          </mj-text>
-          <mj-spacer height="5px" />
-          <mj-spacer height="0px" />
-          </mj-column>
-        </mj-section>
-        <mj-divider border-color="#081E3F" border-style="solid" border-width="1px" padding-left="100px" padding-right="100px" padding-bottom="5px" padding-top="5px"></mj-divider>
-          `)}
-        <mj-raw>
-          <!-- End Lecture  -->
-        </mj-raw>
 
 
         <mj-section background-color="#081D3F">
