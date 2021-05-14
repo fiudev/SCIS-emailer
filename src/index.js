@@ -11,6 +11,8 @@ const password = process.env.MAIL_PASSWORD;
 const jobsAPI = process.env.JOBS_API;
 const scisAPI = process.env.SCIS_API;
 const lectureAPI = process.env.LECTURE_API;
+const currentDate = new Date();
+const currentYear = currentDate.getFullYear();
 
 const parser = new Parser({
   customFields: {
@@ -183,8 +185,7 @@ function formatHTML(events, jobs, calendar, posts, lectures) {
             <mj-section background-color="#fafafa">
             <mj-column width="600px" background-color="#FFF">
 
-              ${posts.map(post =>
-    `
+              ${posts.map(post => `
                 <mj-section>
                   <mj-raw>
                     <!-- Left image -->
@@ -214,8 +215,7 @@ function formatHTML(events, jobs, calendar, posts, lectures) {
               </mj-text>
             </mj-section>
 
-            ${events.before.map(event =>
-    `
+            ${events.before.map(event => `
         <mj-section>
           <mj-raw>
             <!-- Left image -->
@@ -248,8 +248,7 @@ function formatHTML(events, jobs, calendar, posts, lectures) {
         <mj-raw>
               <ul>
             </mj-raw>
-            ${events.after.map(event =>
-    `
+            ${events.after.map(event => `
              <mj-text align="center" font-size="15px" font-weight="500" font-family="Helvetica Neue" color="#081D3F">
                <li> <a href=${event.link}> ${event.title} </a></li>
              </mj-text>
@@ -271,8 +270,7 @@ function formatHTML(events, jobs, calendar, posts, lectures) {
 
       <mj-column width="600px" background-color="#FFF">
 
-         ${lectures.map(lecture =>
-    `
+         ${lectures.map(lecture => `
         <mj-section>
           <mj-raw>
             <!-- Left image -->
@@ -342,7 +340,7 @@ function formatHTML(events, jobs, calendar, posts, lectures) {
             <!-- Copy Right -->
           <mj-section background-color="#fff">f
               <mj-text font-size="12px" font-weight="200" color="#000" align="center">
-                Copyright © 2021, FIU Knight Foundation School of Computing and Information Sciences, All rights reserved.
+                Copyright © ${currentYear}, FIU Knight Foundation School of Computing and Information Sciences, All rights reserved.
               </mj-text>
           </mj-section>
 
