@@ -1,0 +1,35 @@
+        <mj-raw>
+          <!-- Start Feature  -->
+          <!-- place after or before careerpath -->
+        </mj-raw>
+        <mj-section background-color="#081D3F">
+            <mj-text font-size="22px" font-weight="500" color="#fff" align="center">
+                  Featured
+              </mj-text>
+            </mj-section>
+
+            <mj-column width="600px" background-color="#FFF">
+
+                <mj-section>
+
+                  <mj-raw>
+                    <!-- right paragraph -->
+                  </mj-raw>
+                  <mj-column>
+                    <mj-text font-size="20px" font-weight="500" font-family="Helvetica Neue" color="#081D3F">
+                       Internship Week
+                    </mj-text>
+                    <mj-text font-size="18px" font-weight="500" font-family="Helvetica Neue" color="#081D3F">
+                      October 5, 2020 10:00 AM - October 9, 2020 2:00 PM
+                    </mj-text>
+                    <mj-text font-family="Helvetica Neue" color="#626262" font-size="14px" >Looking for an internship? Come and interact with employers offering internships! Don't delay the idea of getting an internship. Learn about what it takes to land an internship and hear from other students who have had internships......</mj-text>
+                     <mj-text color="#081D3F"><a href="https://career.fiu.edu/job-search/events/internship-week/index.html">
+                        Read more..</a></mj-text>
+                    <mj-spacer height="5px" /
+                <mj-spacer height="0px" />
+                  </mj-column>
+                </mj-section>
+                <mj-divider border-color="#081E3F" border-style="solid" border-width="1px" padding-left="100px" padding-right="100px" padding-bottom="5px" padding-top="5px"></mj-divider>
+        <mj-raw>
+          <!-- End Featured  -->
+        </mj-raw>
