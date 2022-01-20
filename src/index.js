@@ -169,7 +169,7 @@ function formatHTML(events, jobs, calendar, posts, lectures) {
         </mj-section>
         <mj-section background-color='#fff'>
           <mj-column>
-            <mj-text align="center" font-size="21px" font-weight="500" color="#030303" padding="0 15px">${
+            <mj-text align="center" font-size="21px" font-weight="500" color="#030303" padding="0 15px">MASTER: ${
   calendar.date
 }</mj-text>
           </mj-column>
