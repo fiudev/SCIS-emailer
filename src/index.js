@@ -155,7 +155,14 @@ async function lectureData(lectureAPI) {
 
 // Using MJML to format HTML Email
 function formatHTML(events, jobs, calendar, posts, lectures) {
-  console.log("EVENTS COUNT: " + events.length + "\nJOBS COUNT: " + jobs.length + "\nPOST COUNT: " + posts.length + "\nLECTURE COUNT: " + lectures.length);
+
+  // Printing item stats.
+  console.log("EVENTS BEFORE COUNT: " + events.before.length +
+              "\nEVENTS AFTER COUNT: " + events.after.length +
+              "\nJOBS COUNT: " + jobs.length +
+              "\nPOST COUNT: " + posts.length +
+              "\nLECTURE COUNT: " + lectures.length);
+
   const { html } = mjml(
     `
   <mjml>
@@ -170,7 +177,7 @@ function formatHTML(events, jobs, calendar, posts, lectures) {
         </mj-section>
         <mj-section background-color='#fff'>
           <mj-column>
-            <mj-text align="center" font-size="21px" font-weight="500" color="#030303" padding="0 15px"> FILTER DEV: ${
+            <mj-text align="center" font-size="21px" font-weight="500" color="#030303" padding="0 15px">${
   calendar.date
 }</mj-text>
           </mj-column>
@@ -207,7 +214,7 @@ function formatHTML(events, jobs, calendar, posts, lectures) {
                 <mj-divider border-color="#081E3F" border-style="solid" border-width="1px" padding-left="100px" padding-right="100px" padding-bottom="5px" padding-top="5px"></mj-divider>
                 `)}
         
-        ${events.length ?
+        ${events.before.length ?
             `<mj-section background-color="#081D3F">
           <mj-text font-size="22px" font-weight="500" color="#fff" align="center">
                 Events
@@ -405,9 +412,8 @@ async function main() {
 
   // Call dashboard here in the future
 
-
   // const html = formatHTML(events, jobs, calendar, posts);
-  //const html = formatHTML(events, jobs, calendar, posts, lectures);
+  const html = formatHTML(events, jobs, calendar, posts, lectures);
   // console.log(html);
 
   await mail(html).catch(console.error);
