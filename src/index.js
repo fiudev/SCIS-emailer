@@ -391,7 +391,7 @@ async function mail(html) {
   await transporter.sendMail({
     from: email,
     to: process.env.TO_EMAIL,
-    subject: 'KFSCIS Weekly Wrap-up',
+    subject: 'KFSCIS Weekly',
     html
   });
 
