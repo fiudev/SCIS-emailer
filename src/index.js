@@ -155,6 +155,14 @@ async function lectureData(lectureAPI) {
 
 // Using MJML to format HTML Email
 function formatHTML(events, jobs, calendar, posts, lectures) {
+
+  // Printing item stats.
+  console.log("EVENTS BEFORE COUNT: " + events.before.length +
+              "\nEVENTS AFTER COUNT: " + events.after.length +
+              "\nJOBS COUNT: " + jobs.length +
+              "\nPOST COUNT: " + posts.length +
+              "\nLECTURE COUNT: " + lectures.length);
+
   const { html } = mjml(
     `
   <mjml>
@@ -174,44 +182,71 @@ function formatHTML(events, jobs, calendar, posts, lectures) {
 }</mj-text>
           </mj-column>
         </mj-section>
-
-
-
-
-
-
-
         <mj-section background-color="#081D3F">
             <mj-text font-size="22px" font-weight="500" color="#fff" align="center">
-                  Events
+                  News Highlights
               </mj-text>
             </mj-section>
+            <mj-section background-color="#fafafa">
+            <mj-column width="600px" background-color="#FFF">
 
-            ${events.before.map(event => `
-        <mj-section>
-          <mj-raw>
-            <!-- Left image -->
-          </mj-raw>
-          <mj-column align="center">
-            <mj-image width="200px" src=${event.media} align="center" fluid-on-mobile="true"></mj-image>
-          </mj-column>
-          <mj-raw>
-            <!-- right paragraph -->
-          </mj-raw>
-          <mj-column>
-            <mj-text font-size="20px" font-weight="500" font-family="Helvetica Neue" color="#081D3F">
-              ${event.title}
+              ${posts.map(post => `
+                <mj-section>
+                  <mj-raw>
+                    <!-- Left image -->
+                  </mj-raw>
+                  <mj-column align="center">
+                    <mj-image width="400px" src=${post.featured_image_urls.medium} align="center" fluid-on-mobile="true"></mj-image>
+                  </mj-column>
+                  <mj-raw>
+                    <!-- right paragraph -->
+                  </mj-raw>
+                  <mj-column>
+                    <mj-text font-size="20px" font-weight="500" font-family="Helvetica Neue" color="#081D3F">
+                      ${post.title.rendered}
+                    </mj-text>
+                    <mj-text font-family="Helvetica Neue" color="#626262" font-size="14px" >${post.excerpt.rendered} </mj-text>
+                <mj-spacer height="0px" />
+                  </mj-column>
+                </mj-section>
+                <mj-divider border-color="#081E3F" border-style="solid" border-width="1px" padding-left="100px" padding-right="100px" padding-bottom="5px" padding-top="5px"></mj-divider>
+                `)}
+        
+        ${events.before.length ?
+            `<mj-section background-color="#081D3F">
+          <mj-text font-size="22px" font-weight="500" color="#fff" align="center">
+                Events
             </mj-text>
-            <mj-text font-family="Helvetica Neue" color="#626262" font-size="14px" >${event.snippet}...</mj-text>
-            <mj-text color="#081D3F"><a href=${event.link}>
-            Read more..</a></mj-text>
-        <mj-spacer height="0px" />
-          </mj-column>
-        </mj-section>
-        <mj-divider border-color="#081E3F" border-style="solid" border-width="1px" padding-left="100px" padding-right="100px" padding-bottom="5px" padding-top="5px"></mj-divider>
-        `)}
+          </mj-section>
 
-        <mj-section background-color="#081D3F">
+          ${events.before.map(event => `
+      <mj-section>
+        <mj-raw>
+          <!-- Left image -->
+        </mj-raw>
+        <mj-column align="center">
+          <mj-image width="200px" src=${event.media} align="center" fluid-on-mobile="true"></mj-image>
+        </mj-column>
+        <mj-raw>
+          <!-- right paragraph -->
+        </mj-raw>
+        <mj-column>
+          <mj-text font-size="20px" font-weight="500" font-family="Helvetica Neue" color="#081D3F">
+            ${event.title}
+          </mj-text>
+          <mj-text font-family="Helvetica Neue" color="#626262" font-size="14px" >${event.snippet}...</mj-text>
+          <mj-text color="#081D3F"><a href=${event.link}>
+          Read more..</a></mj-text>
+      <mj-spacer height="0px" />
+        </mj-column>
+      </mj-section>
+      <mj-divider border-color="#081E3F" border-style="solid" border-width="1px" padding-left="100px" padding-right="100px" padding-bottom="5px" padding-top="5px"></mj-divider>
+      `)}` : ``
+      }
+
+
+      ${events.after.length ?
+        `<mj-section background-color="#081D3F">
         <mj-text font-size="22px" font-weight="500" color="#fff" align="center">
               Save the Date
           </mj-text>
@@ -228,7 +263,8 @@ function formatHTML(events, jobs, calendar, posts, lectures) {
             `)}
         <mj-raw>
           </ul>
-        </mj-raw>
+        </mj-raw>` : ``
+      }
 
 
 
@@ -303,7 +339,7 @@ async function mail(html) {
   await transporter.sendMail({
     from: email,
     to: process.env.TO_EMAIL,
-    subject: 'KFSCIS Weekly Wrap-up',
+    subject: 'KFSCIS Weekly',
     html
   });
 
@@ -323,7 +359,6 @@ async function main() {
   const lectures = await lectureData(lectureAPI).catch(console.error);
 
   // Call dashboard here in the future
-
 
   // const html = formatHTML(events, jobs, calendar, posts);
   const html = formatHTML(events, jobs, calendar, posts, lectures);
